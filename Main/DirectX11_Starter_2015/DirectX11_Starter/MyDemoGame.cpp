@@ -27,6 +27,7 @@
 // For the DirectX Math library
 using namespace DirectX;
 
+#define numMeshes 3
 
 #pragma region Win32 Entry Point (WinMain)
 // --------------------------------------------------------
@@ -90,7 +91,7 @@ MyDemoGame::~MyDemoGame()
 	delete pixelShader;
 
 	//delete the meshes
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < numMeshes; i++) {
 		delete meshes[i];
 	}
 	delete meshes;
@@ -154,28 +155,34 @@ void MyDemoGame::CreateGeometry()
 	XMFLOAT4 green	= XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 	XMFLOAT4 blue	= XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
-	meshes = new Mesh*[3];
-	for (int i = 0; i < 3; i++) {
+	meshes = new Mesh*[numMeshes];
+	for (int i = 0; i < numMeshes; i++) {
 		meshes[i] = new Mesh(device, deviceContext);
 	}
 
 	// Set up the vertices of the triangle we would like to draw
 	// - We're going to copy this array, exactly as it exists in memory
 	//    over to a DirectX-controlled data structure (the vertex buffer)
-	Vertex vertices[] = {
+	/*Vertex vertices[] = {
 		{ XMFLOAT3(+0.0f, +1.0f, +0.0f), red },
 		{ XMFLOAT3(+1.5f, -1.0f, +0.0f), blue },
 		{ XMFLOAT3(-1.5f, -1.0f, +0.0f), green },
-	};
-	
+	};*/
+	/*Vertex vertices[] = {
+		{ XMFLOAT3(+0.0f, +1.0f, +0.0f), red },
+		{ XMFLOAT3(+1.5f, +1.0f, +0.0f), blue },
+		{ XMFLOAT3(+1.5f, -1.0f, +0.0f), green },
+		{ XMFLOAT3(+0.0f, -1.0f, +0.0f), blue },
+	};*/
 	// Set up the indices, which tell us which vertices to use and in which order
 	// - This is somewhat redundant for just 3 vertices (it's a simple example)
 	// - Indices are technically not required if the vertices are in the buffer 
 	//    in the correct order and each one will be used exactly once
 	// - But just to see how it's done...
-	unsigned int indices[] = { 0, 1, 2 };
+	unsigned int indices[] = { 0, 1, 2};
 
-	meshes[0]->CreateGeometry(vertices, indices, 3,3);
+	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
+	meshes[0]->CreateGeometry("testModel.obj");
 
 	Vertex vertices2[] =
 	{
@@ -292,7 +299,7 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 
 	//code moved to the Mesh class for organization
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < numMeshes; i++) {
 		meshes[i]->Draw(aspectRatio);
 	}
 	

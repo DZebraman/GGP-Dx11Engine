@@ -7,6 +7,11 @@ Mesh::Mesh(ID3D11Device* _device, ID3D11DeviceContext * _deviceContext) {
 	deviceContext = _deviceContext;
 }
 
+void Mesh::CreateGeometry(const char * path) {
+	MeshLoader mesh = MeshLoader(path);
+	CreateGeometry(mesh.getVerts(), mesh.getIndices(), mesh.getNumVerts(), mesh.getNumInd());
+}
+
 void Mesh::CreateGeometry(Vertex * vertexArray, unsigned int * indices, int numVerts, int _numIndices)
 {
 	LoadShaders(device, deviceContext);
@@ -38,7 +43,7 @@ void Mesh::CreateGeometry(Vertex * vertexArray, unsigned int * indices, int numV
 	//    it to create the buffer.  The description is then useless.
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(int) * numVerts;         // 3 = number of indices in the buffer
+	ibd.ByteWidth = sizeof(unsigned int) * numIndices;         // 3 = number of indices in the buffer
 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER; // Tells DirectX this is an index buffer
 	ibd.CPUAccessFlags = 0;
 	ibd.MiscFlags = 0;

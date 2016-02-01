@@ -4,6 +4,7 @@
 #include "SimpleShader.h"
 #include <DirectXMath.h>
 #include "DirectXGameCore.h"
+#include "MeshLoader.h"
 
 class Mesh
 {
@@ -26,6 +27,7 @@ private:
 public:
 	Mesh(ID3D11Device* _device, ID3D11DeviceContext * _deviceContext);
 	void CreateGeometry(Vertex* vertexArray, unsigned int * indices, int numVerts, int numIndices);
+	void CreateGeometry(const char * path);
 	~Mesh();
 
 	ID3D11Buffer* GetVertexBuffer();
