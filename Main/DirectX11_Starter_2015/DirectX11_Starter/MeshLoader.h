@@ -9,9 +9,14 @@
 class MeshLoader
 {
 	Vertex* vertArray;
+	int* indices;
+	std::vector<Vertex> vertList;
+	std::vector<int> indicesList;
 	//std::string*split(std::string input);
 public:
-	MeshLoader(std::string fileName);
+	Vertex* getVerts();
+	int* getIndices();
+	MeshLoader(const char * path);
 	~MeshLoader();
 };
 
