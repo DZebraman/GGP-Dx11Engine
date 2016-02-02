@@ -14,7 +14,7 @@ void Mesh::CreateGeometry(const char * path) {
 
 void Mesh::CreateGeometry(Vertex * vertexArray, unsigned int * indices, int numVerts, int _numIndices)
 {
-	LoadShaders(device, deviceContext);
+	//LoadShaders(device, deviceContext);
 
 	numIndices = _numIndices;
 
@@ -72,8 +72,6 @@ Mesh::~Mesh()
 	delete iBuffer;
 	/*delete device;
 	delete deviceContext;*/
-	delete pixelShader;
-	delete vertexShader;
 }
 
 ID3D11Buffer * Mesh::GetVertexBuffer() {
@@ -88,68 +86,8 @@ int Mesh::GetIndexCount() {
 	return numIndices;
 }
 
-void Mesh::LoadShaders(ID3D11Device* device, ID3D11DeviceContext * deviceContext)
-{
-	vertexShader = new SimpleVertexShader(device, deviceContext);
-	vertexShader->LoadShaderFile(L"VertexShader.cso");
-
-	pixelShader = new SimplePixelShader(device, deviceContext);
-	pixelShader->LoadShaderFile(L"PixelShader.cso");
-}
-
-void Mesh::CreateMatrices(float _aspectRatio)
-{
-	// Set up world matrix
-	// - In an actual game, each object will need one of these and they should
-	//   update when/if the object moves (every frame)
-	XMMATRIX W = XMMatrixIdentity();
-	XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(W)); // Transpose for HLSL!
-
-														 // Create the View matrix
-														 // - In an actual game, recreate this matrix when the camera 
-														 //    moves (potentially every frame)
-														 // - We're using the LOOK TO function, which takes the position of the
-														 //    camera and the direction you want it to look (as well as "up")
-														 // - Another option is the LOOK AT function, to look towards a specific
-														 //    point in 3D space
-	XMVECTOR pos = XMVectorSet(0, 0, -5, 0);
-	XMVECTOR dir = XMVectorSet(0, 0, 1, 0);
-	XMVECTOR up = XMVectorSet(0, 1, 0, 0);
-	XMMATRIX V = XMMatrixLookToLH(
-		pos,     // The position of the "camera"
-		dir,     // Direction the camera is looking
-		up);     // "Up" direction in 3D space (prevents roll)
-	XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(V)); // Transpose for HLSL!
-
-														// Create the Projection matrix
-														// - This should match the window's aspect ratio, and also update anytime
-														//   the window resizes (which is already happening in OnResize() below)
-	XMMATRIX P = XMMatrixPerspectiveFovLH(
-		0.25f * 3.1415926535f,		// Field of View Angle
-		_aspectRatio,				// Aspect ratio
-		0.1f,						// Near clip plane distance
-		100.0f);					// Far clip plane distance
-	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
-}
 
 void Mesh::Draw(float aspectRatio) {
-	CreateMatrices(aspectRatio);
-
-	// Send data to shader variables
-	//  - Do this ONCE PER OBJECT you're drawing
-	//  - This is actually a complex process of copying data to a local buffer
-	//    and then copying that entire buffer to the GPU.  
-	//  - The "SimpleShader" class handles all of that for you.
-	vertexShader->SetMatrix4x4("world", worldMatrix);
-	vertexShader->SetMatrix4x4("view", viewMatrix);
-	vertexShader->SetMatrix4x4("projection", projectionMatrix);
-
-	// Set the vertex and pixel shaders to use for the next Draw() command
-	//  - These don't technically need to be set every frame...YET
-	//  - Once you start applying different shaders to different objects,
-	//    you'll need to swap the current shaders before each draw
-	vertexShader->SetShader(true);
-	pixelShader->SetShader(true);
 
 	// Set buffers in the input assembler
 	//  - Do this ONCE PER OBJECT you're drawing, since each object might

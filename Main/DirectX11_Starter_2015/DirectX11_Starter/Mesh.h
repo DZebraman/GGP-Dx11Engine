@@ -12,17 +12,8 @@ private:
 	ID3D11Buffer *vBuffer, *iBuffer;
 	int numIndices;
 
-	// Wrappers for DirectX shaders to provide simplified functionality
-	SimpleVertexShader* vertexShader;
-	SimplePixelShader* pixelShader;
-
 	ID3D11Device* device;
 	ID3D11DeviceContext * deviceContext;
-
-	// The matrices to go from model space to screen space
-	DirectX::XMFLOAT4X4 worldMatrix;
-	DirectX::XMFLOAT4X4 viewMatrix;
-	DirectX::XMFLOAT4X4 projectionMatrix;
 
 public:
 	Mesh(ID3D11Device* _device, ID3D11DeviceContext * _deviceContext);

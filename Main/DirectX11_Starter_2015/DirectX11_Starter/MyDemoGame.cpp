@@ -287,6 +287,8 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 	// Background color (Cornflower Blue in this case) for clearing
 	const float color[4] = {0.4f, 0.6f, 0.75f, 0.0f};
 
+	
+
 	// Clear the render target and depth buffer (erases what's on the screen)
 	//  - Do this ONCE PER FRAME
 	//  - At the beginning of DrawScene (before drawing *anything*)
@@ -298,6 +300,17 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 		0);
 
 	//code moved to the Mesh class for organization
+	vertexShader->SetMatrix4x4("world", worldMatrix);
+	vertexShader->SetMatrix4x4("view", viewMatrix);
+	vertexShader->SetMatrix4x4("projection", projectionMatrix);
+
+	// Set the vertex and pixel shaders to use for the next Draw() command
+	//  - These don't technically need to be set every frame...YET
+	//  - Once you start applying different shaders to different objects,
+	//    you'll need to swap the current shaders before each draw
+	vertexShader->SetShader(true);
+	pixelShader->SetShader(true);
+
 
 	for (int i = 0; i < numMeshes; i++) {
 		meshes[i]->Draw(aspectRatio);
