@@ -4,6 +4,7 @@
 #include "DirectXGameCore.h"
 #include "SimpleShader.h"
 #include "Mesh.h"
+#include "Entity.h"
 
 // Include run-time memory checking in debug builds, so 
 // we can be notified of memory leaks
@@ -40,6 +41,7 @@ private:
 	void CreateGeometry();
 	void CreateMatrices();
 
+	Entity** entities;
 	Mesh** meshes;
 	//Mesh* mesh1;
 

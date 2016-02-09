@@ -91,10 +91,14 @@ MyDemoGame::~MyDemoGame()
 	delete pixelShader;
 
 	//delete the meshes
-	for (int i = 0; i < numMeshes; i++) {
+	/*for (int i = 0; i < numMeshes; i++) {
 		delete meshes[i];
-	}
+	}*/
 	delete meshes;
+	for (int i = 0; i < numMeshes; i++) {
+		delete entities[i];
+	}
+	delete entities;
 	//delete mesh1;
 }
 
@@ -156,10 +160,19 @@ void MyDemoGame::CreateGeometry()
 	XMFLOAT4 blue	= XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
 	meshes = new Mesh*[numMeshes];
+	entities = new Entity*[numMeshes];
 	for (int i = 0; i < numMeshes; i++) {
 		meshes[i] = new Mesh(device, deviceContext);
+		entities[i] = new Entity(meshes[i]);
 	}
 
+	XMFLOAT3 pos = XMFLOAT3(0.f, 0.f, 0.f);
+	entities[0]->setVec("pos", pos);
+	pos = XMFLOAT3(-1.f, 0.f, 0.f);
+	entities[0]->setVec("pos", pos);
+	pos = XMFLOAT3(1.f, 0.f, 0.f);
+	entities[0]->setVec("pos", pos);
+	
 	// Set up the vertices of the triangle we would like to draw
 	// - We're going to copy this array, exactly as it exists in memory
 	//    over to a DirectX-controlled data structure (the vertex buffer)
@@ -313,7 +326,7 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 
 
 	for (int i = 0; i < numMeshes; i++) {
-		meshes[i]->Draw(aspectRatio);
+		entities[i]->Draw(aspectRatio);
 	}
 	
 
