@@ -163,15 +163,20 @@ void MyDemoGame::CreateGeometry()
 	entities = new Entity*[numMeshes];
 	for (int i = 0; i < numMeshes; i++) {
 		meshes[i] = new Mesh(device, deviceContext);
-		entities[i] = new Entity(meshes[i]);
+		entities[i] = new Entity(meshes[i],vertexShader,pixelShader);
 	}
 
-	XMFLOAT3 pos = XMFLOAT3(0.f, 0.f, 0.f);
-	entities[0]->setVec("pos", pos);
-	pos = XMFLOAT3(-1.f, 0.f, 0.f);
-	entities[0]->setVec("pos", pos);
-	pos = XMFLOAT3(1.f, 0.f, 0.f);
-	entities[0]->setVec("pos", pos);
+	XMFLOAT3 pos = XMFLOAT3(-1.f, 0.f, 10.f);
+	XMFLOAT3 dir = XMFLOAT3(0.f, 0.f, 1.f);
+	XMFLOAT3 up = XMFLOAT3(1.f, 0.f, 1.f);
+
+	for (int i = 0; i < numMeshes; ++i) {
+		entities[i]->setVec("pos", pos);
+		entities[i]->setVec("fwd", dir);
+		entities[i]->setVec("up", up);
+		pos.x += 1;
+	}
+
 	
 	// Set up the vertices of the triangle we would like to draw
 	// - We're going to copy this array, exactly as it exists in memory
@@ -192,6 +197,7 @@ void MyDemoGame::CreateGeometry()
 	// - Indices are technically not required if the vertices are in the buffer 
 	//    in the correct order and each one will be used exactly once
 	// - But just to see how it's done...
+
 	unsigned int indices[] = { 0, 1, 2};
 
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
