@@ -166,15 +166,17 @@ void MyDemoGame::CreateGeometry()
 		entities[i] = new Entity(meshes[i],vertexShader,pixelShader);
 	}
 
-	XMFLOAT3 pos = XMFLOAT3(-1.f, 0.f, 10.f);
+	XMFLOAT3 pos = XMFLOAT3(-5.f, 0.f, 10.f);
 	XMFLOAT3 dir = XMFLOAT3(0.f, 0.f, 1.f);
-	XMFLOAT3 up = XMFLOAT3(1.f, 0.f, 1.f);
+	XMFLOAT3 up = XMFLOAT3(0.f, 1.f, 0.f);
+	XMFLOAT3 scale = XMFLOAT3(1.f, 1.f, 1.f);
 
 	for (int i = 0; i < numMeshes; ++i) {
 		entities[i]->setVec("pos", pos);
 		entities[i]->setVec("fwd", dir);
 		entities[i]->setVec("up", up);
-		pos.x += 1;
+		entities[i]->setVec("scale", scale);
+		pos.x += 5;
 	}
 
 	
@@ -296,6 +298,41 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
+
+	XMFLOAT3 newPos = entities[1]->getVec("pos");
+	newPos.x += sin(totalTime) * deltaTime;
+
+	entities[1]->setVec("pos", newPos);
+
+
+	XMMATRIX tempRotMat = XMLoadFloat4x4(&entities[0]->getMat("rot"));
+	//avoid gimbal lock by using "additive" matricies
+	XMFLOAT3 vTempRot(0.f,0.f,0.f);
+	if (GetAsyncKeyState('K') & 0x8000) { vTempRot.x += (2 * deltaTime); }
+	if (GetAsyncKeyState('I') & 0x8000) { vTempRot.x -= (2 * deltaTime); }
+	if (GetAsyncKeyState('L') & 0x8000) { vTempRot.y += (2 * deltaTime); }
+	if (GetAsyncKeyState('J') & 0x8000) { vTempRot.y -= (2 * deltaTime); }
+	if (GetAsyncKeyState('O') & 0x8000) { vTempRot.z += (2 * deltaTime); }
+	if (GetAsyncKeyState('U') & 0x8000) { vTempRot.z -= (2 * deltaTime); }
+
+	//tempRotMat *= XMMatrixRotationX(vTempRot.x) * XMMatrixRotationY(vTempRot.y) * XMMatrixRotationZ(vTempRot.z);
+	tempRotMat *= XMMatrixRotationRollPitchYaw(vTempRot.x, vTempRot.y, vTempRot.z);
+	if (GetAsyncKeyState('R') & 0x8000) { tempRotMat = XMMatrixIdentity(); }
+
+
+	XMFLOAT4X4 tempRot;
+	XMStoreFloat4x4(&tempRot, XMMatrixTranspose(tempRotMat));
+
+	entities[0]->setMat("rot", tempRot);
+	
+	XMFLOAT3 pos = entities[0]->getVec("pos");
+	if (GetAsyncKeyState('D') & 0x8000) { pos.x += (5 * deltaTime); }
+	if (GetAsyncKeyState('A') & 0x8000) { pos.x -= (5 * deltaTime); }
+	if (GetAsyncKeyState('W') & 0x8000) { pos.y += (5 * deltaTime); }
+	if (GetAsyncKeyState('S') & 0x8000) { pos.y -= (5 * deltaTime); }
+	if (GetAsyncKeyState('Q') & 0x8000) { pos.z += (5 * deltaTime); }
+	if (GetAsyncKeyState('E') & 0x8000) { pos.z -= (5 * deltaTime); }
+	entities[0]->setVec("pos", pos);
 }
 
 // --------------------------------------------------------

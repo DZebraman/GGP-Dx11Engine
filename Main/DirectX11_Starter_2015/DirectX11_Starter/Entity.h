@@ -10,14 +10,13 @@ class Entity
 
 private:
 	Mesh* mesh;
-	XMFLOAT3 vPos, vFwd, vUp;
-	XMFLOAT4X4 mWorld, mPos, mRot, mScale;
+	
 
 	SimpleVertexShader* vertexShader;
 	SimplePixelShader* pixelShader;
 
-	std::map<std::string, XMFLOAT4X4 *> matLookUp;
-	std::map<std::string, XMFLOAT3 *> vecLookUp;
+	std::map<std::string, XMFLOAT4X4> matLookUp;
+	std::map<std::string, XMFLOAT3> vecLookUp;
 
 public:
 	Entity(Mesh* _mesh, SimpleVertexShader* _vertexShader, SimplePixelShader* _pixelShader);
