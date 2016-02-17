@@ -27,7 +27,6 @@
 // For the DirectX Math library
 using namespace DirectX;
 
-#define numMeshes 3
 
 #pragma region Win32 Entry Point (WinMain)
 // --------------------------------------------------------
@@ -90,6 +89,9 @@ MyDemoGame::~MyDemoGame()
 	delete vertexShader;
 	delete pixelShader;
 
+	delete camera;
+	delete material;
+
 	//delete the meshes
 	/*for (int i = 0; i < numMeshes; i++) {
 		delete meshes[i];
@@ -128,6 +130,10 @@ bool MyDemoGame::Init()
 	// geometric primitives we'll be using and how to interpret them
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	camera = new Camera();
+	camera->updateProjection(aspectRatio);
+
+	material = new Material(vertexShader, pixelShader);
 	// Successfully initialized
 	return true;
 }
@@ -163,7 +169,7 @@ void MyDemoGame::CreateGeometry()
 	entities = new Entity*[numMeshes];
 	for (int i = 0; i < numMeshes; i++) {
 		meshes[i] = new Mesh(device, deviceContext);
-		entities[i] = new Entity(meshes[i],vertexShader,pixelShader);
+		entities[i] = new Entity(meshes[i],vertexShader,pixelShader, material);
 	}
 
 	XMFLOAT3 pos = XMFLOAT3(-5.f, 0.f, 10.f);
@@ -284,6 +290,9 @@ void MyDemoGame::OnResize()
 		0.1f,				  	// Near clip plane distance
 		100.0f);			  	// Far clip plane distance
 	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+
+	if(camera)
+		camera->updateProjection(aspectRatio);
 }
 #pragma endregion
 
@@ -298,6 +307,8 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
+
+	camera->update(deltaTime);
 
 	XMFLOAT3 newPos = entities[1]->getVec("pos");
 	newPos.x += sin(totalTime) * deltaTime;
@@ -324,15 +335,6 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 	XMStoreFloat4x4(&tempRot, XMMatrixTranspose(tempRotMat));
 
 	entities[0]->setMat("rot", tempRot);
-	
-	XMFLOAT3 pos = entities[0]->getVec("pos");
-	if (GetAsyncKeyState('D') & 0x8000) { pos.x += (5 * deltaTime); }
-	if (GetAsyncKeyState('A') & 0x8000) { pos.x -= (5 * deltaTime); }
-	if (GetAsyncKeyState('W') & 0x8000) { pos.y += (5 * deltaTime); }
-	if (GetAsyncKeyState('S') & 0x8000) { pos.y -= (5 * deltaTime); }
-	if (GetAsyncKeyState('Q') & 0x8000) { pos.z += (5 * deltaTime); }
-	if (GetAsyncKeyState('E') & 0x8000) { pos.z -= (5 * deltaTime); }
-	entities[0]->setVec("pos", pos);
 }
 
 // --------------------------------------------------------
@@ -355,21 +357,10 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 		1.0f,
 		0);
 
-	//code moved to the Mesh class for organization
-	vertexShader->SetMatrix4x4("world", worldMatrix);
-	vertexShader->SetMatrix4x4("view", viewMatrix);
-	vertexShader->SetMatrix4x4("projection", projectionMatrix);
-
-	// Set the vertex and pixel shaders to use for the next Draw() command
-	//  - These don't technically need to be set every frame...YET
-	//  - Once you start applying different shaders to different objects,
-	//    you'll need to swap the current shaders before each draw
-	vertexShader->SetShader(true);
-	pixelShader->SetShader(true);
-
+	//code moved to Entity
 
 	for (int i = 0; i < numMeshes; i++) {
-		entities[i]->Draw(aspectRatio);
+		entities[i]->Draw(camera->getViewMatrix(),camera->getProjMatrix());
 	}
 	
 
@@ -397,6 +388,8 @@ void MyDemoGame::OnMouseDown(WPARAM btnState, int x, int y)
 	prevMousePos.x = x;
 	prevMousePos.y = y;
 
+	canMoveCam = true;
+
 	// Caputure the mouse so we keep getting mouse move
 	// events even if the mouse leaves the window.  we'll be
 	// releasing the capture once a mouse button is released
@@ -412,6 +405,8 @@ void MyDemoGame::OnMouseUp(WPARAM btnState, int x, int y)
 {
 	// We don't care about the tracking the cursor outside
 	// the window anymore (we're not dragging if the mouse is up)
+	canMoveCam = false;
+
 	ReleaseCapture();
 }
 
@@ -424,6 +419,10 @@ void MyDemoGame::OnMouseUp(WPARAM btnState, int x, int y)
 // --------------------------------------------------------
 void MyDemoGame::OnMouseMove(WPARAM btnState, int x, int y)
 {
+	//only change view with mouse is pressed
+	if(canMoveCam)
+		camera->mouseRotation((y - prevMousePos.y) * rotScale, (x - prevMousePos.x) * rotScale);
+
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;

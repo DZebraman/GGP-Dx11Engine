@@ -25,7 +25,7 @@ public:
 	ID3D11Buffer* GetIndexBuffer();
 	int GetIndexCount();
 	void LoadShaders(ID3D11Device* device, ID3D11DeviceContext * deviceContext);
-	void Draw(float aspectRatio);
+	void Draw();
 	void CreateMatrices(float _aspectRatio);
 };
 

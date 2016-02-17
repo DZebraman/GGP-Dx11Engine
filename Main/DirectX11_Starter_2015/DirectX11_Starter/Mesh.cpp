@@ -87,7 +87,7 @@ int Mesh::GetIndexCount() {
 }
 
 
-void Mesh::Draw(float aspectRatio) {
+void Mesh::Draw() {
 
 	// Set buffers in the input assembler
 	//  - Do this ONCE PER OBJECT you're drawing, since each object might

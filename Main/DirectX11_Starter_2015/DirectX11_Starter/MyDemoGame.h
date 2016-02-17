@@ -5,6 +5,7 @@
 #include "SimpleShader.h"
 #include "Mesh.h"
 #include "Entity.h"
+#include "Camera.h"
 
 // Include run-time memory checking in debug builds, so 
 // we can be notified of memory leaks
@@ -12,6 +13,9 @@
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #endif
+
+#define numMeshes 3
+#define rotScale 0.0005f
 
 // --------------------------------------------------------
 // Game class which extends the base DirectXGameCore class
@@ -33,6 +37,8 @@ public:
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
 
+	bool canMoveCam = false;
+
 private:
 	// Initialization for our "game" demo - Feel free to
 	// expand, alter, rename or remove these once you
@@ -43,7 +49,8 @@ private:
 
 	Entity** entities;
 	Mesh** meshes;
-	//Mesh* mesh1;
+	Camera* camera;
+	Material* material;
 
 	// Buffers to hold actual geometry data
 	ID3D11Buffer* vertexBuffer;

@@ -2,18 +2,20 @@
 
 
 
-Entity::Entity(Mesh* _mesh, SimpleVertexShader* _vertexShader, SimplePixelShader* _pixelShader)
+Entity::Entity(Mesh* _mesh, SimpleVertexShader* _vertexShader, SimplePixelShader* _pixelShader, Material * _material)
 {
 	mesh = _mesh;
 
 	vertexShader = _vertexShader;
 	pixelShader = _pixelShader;
 
+	material = _material;
+
 	XMMATRIX xmRot = XMMatrixIdentity();
 	XMStoreFloat4x4(&matLookUp["rot"], XMMatrixTranspose(xmRot));
 }
 
-void Entity::Draw(float aspectRatio) {
+void Entity::Draw(XMFLOAT4X4 * viewMat, XMFLOAT4X4 * projMat) {
 
 	XMFLOAT3 vPos, vFwd, vUp, vScale;
 	XMFLOAT4X4 mWorld, mPos, mRot, mScale;
@@ -45,17 +47,21 @@ void Entity::Draw(float aspectRatio) {
 	xmWorld = xmRot * xmPos;
 	XMStoreFloat4x4(&matLookUp["world"], XMMatrixTranspose(xmWorld));
 
-	//code moved to the Mesh class for organization
-	vertexShader->SetMatrix4x4("world", mWorld);
 
-	// Set the vertex and pixel shaders to use for the next Draw() command
-	//  - These don't technically need to be set every frame...YET
-	//  - Once you start applying different shaders to different objects,
-	//    you'll need to swap the current shaders before each draw
+	PrepareMaterial(viewMat, projMat);
+
+
+	mesh->Draw();
+}
+
+void Entity::PrepareMaterial(XMFLOAT4X4 * viewMat, XMFLOAT4X4 * projMat) {
+
+	vertexShader->SetMatrix4x4("view", *viewMat);
+	vertexShader->SetMatrix4x4("projection", *projMat);
+	vertexShader->SetMatrix4x4("world", matLookUp["world"]);
+
 	vertexShader->SetShader(true);
 	pixelShader->SetShader(true);
-
-	mesh->Draw(aspectRatio);
 }
 
 Entity::~Entity()
