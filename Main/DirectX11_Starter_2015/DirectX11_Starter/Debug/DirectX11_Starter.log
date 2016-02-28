@@ -1,2 +1,4 @@
-﻿  compilation object save succeeded; see Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Debug\PixelShader.cso
+﻿  MyDemoGame.cpp
+q:\classes\3-2\ggp\engine\main\directx11_starter_2015\directx11_starter\mydemogame.cpp(136): warning C4305: 'argument': truncation from 'double' to 'float'
+q:\classes\3-2\ggp\engine\main\directx11_starter_2015\directx11_starter\mydemogame.cpp(137): warning C4305: 'argument': truncation from 'double' to 'float'
   DirectX11_Starter.vcxproj -> Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Debug\DirectX11_Starter.exe

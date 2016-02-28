@@ -64,8 +64,13 @@ MeshLoader::MeshLoader(const char * path)
 				vertList[vertexIndex[2]].Normal = vertNrm[normalIndex[2]];
 
 				vertList[vertexIndex[0]].UV = vertUV[uvIndex[0]];
+				vertList[vertexIndex[0]].UV.y = 1-vertUV[uvIndex[0]].y;
+
 				vertList[vertexIndex[1]].UV = vertUV[uvIndex[1]];
+				vertList[vertexIndex[1]].UV.y = 1 - vertUV[uvIndex[1]].y;
+
 				vertList[vertexIndex[2]].UV = vertUV[uvIndex[2]];
+				vertList[vertexIndex[2]].UV.y = 1 - vertUV[uvIndex[2]].y;
 			}
 		}
 

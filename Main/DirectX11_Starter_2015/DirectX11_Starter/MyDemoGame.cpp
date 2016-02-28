@@ -23,6 +23,7 @@
 
 #include "MyDemoGame.h"
 #include "Vertex.h"
+#include "WICTextureLoader.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -148,6 +149,21 @@ bool MyDemoGame::Init()
 	camera->updateProjection(aspectRatio);
 
 	material = new Material(vertexShader, pixelShader);
+
+	CreateWICTextureFromFile(device, deviceContext, L"phone.png", 0, &normalSRV);
+
+	// Create the sampler state
+	D3D11_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+	device->CreateSamplerState(&samplerDesc, &samplerState);
+
+	pixelShader->SetShaderResourceView("normalTexture", normalSRV);
+	pixelShader->SetSamplerState("trilinear", samplerState);
+
 	// Successfully initialized
 	return true;
 }
@@ -223,7 +239,7 @@ void MyDemoGame::CreateGeometry()
 	unsigned int indices[] = { 0, 1, 2};
 
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
-	meshes[0]->CreateGeometry("testModel.obj");
+	meshes[0]->CreateGeometry("phone.obj");
 
 	meshes[1]->CreateGeometry("helix.obj");
 

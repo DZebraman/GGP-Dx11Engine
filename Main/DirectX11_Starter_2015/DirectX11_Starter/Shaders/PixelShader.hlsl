@@ -14,6 +14,8 @@ struct VertexToPixel
 	float4 position		: SV_POSITION;
 	float3 normal		: NORMAL;
 	matrix view			: VIEW;
+	matrix world		: WORLD;
+	float2 uv			: UV;
 };
 
 struct DirectionalLight {
@@ -23,6 +25,9 @@ struct DirectionalLight {
 };
 
 #define numLights 2
+
+Texture2D normalTexture    : register(t0);
+SamplerState trilinear     : register(s0);
 
 cbuffer lightBuffer : register(b0) {
 	DirectionalLight light1;
@@ -40,7 +45,7 @@ float fresnel(float3 fwd, float3 normal, int exp, float intensity) {
 }
 
 
-#define celDivisions 2
+#define celDivisions 4
 
 float celShade(float input) {
 	return ceil(input * celDivisions) / celDivisions;
@@ -58,24 +63,45 @@ float celShade(float input) {
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	float lightAmount1 = getLightAmount(light1,input.normal);
-	float lightAmount2 = getLightAmount(light2, input.normal);
+	float3 tangent;
+	float3 binormal;
+	
+	float3 c1 = cross(input.normal, float3(0.0, 0.0, 1.0));
+	float3 c2 = cross(input.normal, float3(0.0, 1.0, 0.0));
+	
+	if (length(c1)>length(c2))
+	{
+		tangent = c1;
+	}
+	else
+	{
+		tangent = c2;
+	}
+	
+	tangent = normalize(tangent);
+	
+	binormal = cross(input.normal, tangent);
+	binormal = normalize(binormal);
+
+	float4 nrmTex = normalTexture.Sample(trilinear, input.uv);
+	nrmTex = 2 * nrmTex - 1;
+
+	float3 nrm = (nrmTex.x * tangent)+(nrmTex.y * binormal)+(nrmTex.z * input.normal);//mul(input.world,(2 * (nrmTex) - 1)));
+	
+
+	//return getLightAmount(light1, nrm);
+
+	float lightAmount1 = getLightAmount(light1, nrm);
+	float lightAmount2 = getLightAmount(light2, nrm);
 
 	float4 ambColor = light1.AmbientColor + light2.AmbientColor;
 
 	//cel shading
-	//lightAmount1 = ceil(lightAmount1 * celDivisions) / celDivisions;
-	//lightAmount2 = ceil(lightAmount2 * celDivisions) / celDivisions;
 	lightAmount1 = celShade(lightAmount1);
 	lightAmount2 = celShade(lightAmount2);
 
 	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
-	float fresnelAmount = fresnel(fwd, input.normal, 5.f,0.06f);
-
-	// Just return the input color
-	// - This color (like most values passing through the rasterizer) is 
-	//   interpolated for each pixel between the corresponding vertices 
-	//   of the triangle we're rendering
+	float fresnelAmount = fresnel(fwd, nrm, 5.f,0.06f);
 
 	//return fresnelAmount;
 	return saturate(((light1.DiffuseColor*lightAmount1) + (light2.DiffuseColor*lightAmount2)) + ambColor + fresnelAmount);
