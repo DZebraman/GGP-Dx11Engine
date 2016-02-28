@@ -150,7 +150,7 @@ bool MyDemoGame::Init()
 
 	material = new Material(vertexShader, pixelShader);
 
-	CreateWICTextureFromFile(device, deviceContext, L"phone.png", 0, &normalSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"porthole_nrm.png", 0, &normalSRV);
 
 	// Create the sampler state
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -239,7 +239,7 @@ void MyDemoGame::CreateGeometry()
 	unsigned int indices[] = { 0, 1, 2};
 
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
-	meshes[0]->CreateGeometry("phone.obj");
+	meshes[0]->CreateGeometry("sphere.obj");
 
 	meshes[1]->CreateGeometry("helix.obj");
 

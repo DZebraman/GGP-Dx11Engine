@@ -1,2 +1,10 @@
-﻿  compilation object save succeeded; see Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Release\PixelShader.cso
+﻿  MeshLoader.cpp
+MeshLoader.cpp(42): warning C4473: 'fscanf' : not enough arguments passed for format string
+  MeshLoader.cpp(42): note: placeholders and their parameters expect 12 variadic arguments, but 9 were provided
+  MeshLoader.cpp(42): note: the missing variadic argument 10 is required by format string '%d'
+  Generating code
+  6 of 2517 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    6 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
   DirectX11_Starter.vcxproj -> Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Release\DirectX11_Starter.exe

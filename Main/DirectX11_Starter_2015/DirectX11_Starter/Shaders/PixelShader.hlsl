@@ -45,7 +45,7 @@ float fresnel(float3 fwd, float3 normal, int exp, float intensity) {
 }
 
 
-#define celDivisions 4
+#define celDivisions 3
 
 float celShade(float input) {
 	return ceil(input * celDivisions) / celDivisions;
@@ -97,8 +97,8 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float4 ambColor = light1.AmbientColor + light2.AmbientColor;
 
 	//cel shading
-	lightAmount1 = celShade(lightAmount1);
-	lightAmount2 = celShade(lightAmount2);
+	/*lightAmount1 = celShade(lightAmount1);
+	lightAmount2 = celShade(lightAmount2);*/
 
 	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
 	float fresnelAmount = fresnel(fwd, nrm, 5.f,0.06f);

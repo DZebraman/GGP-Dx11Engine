@@ -87,6 +87,7 @@ MeshLoader::MeshLoader(const char * path)
 			indices[i] = indicesList[i];
 		}
 
+		//this should work, but it doesn't :(
 		/*vertArray = &vertList[0];
 		indices = &indicesList[0];*/
 	}
