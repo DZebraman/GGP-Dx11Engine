@@ -1,7 +1,22 @@
 ﻿  Camera.cpp
+  Entitiy.cpp
+  Material.cpp
+  Mesh.cpp
+  MeshLoader.cpp
+MeshLoader.cpp(76): warning C4018: '<': signed/unsigned mismatch
+MeshLoader.cpp(81): warning C4018: '<': signed/unsigned mismatch
+MeshLoader.cpp(42): warning C4473: 'fscanf' : not enough arguments passed for format string
+  MeshLoader.cpp(42): note: placeholders and their parameters expect 12 variadic arguments, but 9 were provided
+  MeshLoader.cpp(42): note: the missing variadic argument 10 is required by format string '%d'
+  MyDemoGame.cpp
+MyDemoGame.cpp(135): warning C4305: 'argument': truncation from 'double' to 'float'
+MyDemoGame.cpp(136): warning C4305: 'argument': truncation from 'double' to 'float'
+  dxerr.cpp
+  DirectXGameCore.cpp
+  SimpleShader.cpp
   Generating code
-  1 of 2363 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  0 of 2518 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    22 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   DirectX11_Starter.vcxproj -> Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Release\DirectX11_Starter.exe

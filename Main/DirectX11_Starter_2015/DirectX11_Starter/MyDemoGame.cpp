@@ -130,6 +130,20 @@ bool MyDemoGame::Init()
 	// geometric primitives we'll be using and how to interpret them
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	lights = new DirectionalLight[2];
+
+	lights[0] = { XMFLOAT4(0.1f,0.1,0.1f,1.f),XMFLOAT4(1,1,1,1),XMFLOAT3(0,0,1)};
+	lights[1] = { XMFLOAT4(0,0,0,1),XMFLOAT4(0.4,0.2,0.2,1),XMFLOAT3(1,0,0) };
+
+	pixelShader->SetData(
+		"light1",
+		&lights[0],
+		sizeof(DirectionalLight));
+	pixelShader->SetData(
+		"light2",
+		&lights[1],
+		sizeof(DirectionalLight));
+
 	camera = new Camera();
 	camera->updateProjection(aspectRatio);
 
@@ -211,20 +225,13 @@ void MyDemoGame::CreateGeometry()
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
 	meshes[0]->CreateGeometry("testModel.obj");
 
-	Vertex vertices2[] =
-	{
-		{ XMFLOAT3(+1.0f, +2.0f, +1.0f), red },
-		{ XMFLOAT3(+2.5f, -0.0f, +1.0f), blue },
-		{ XMFLOAT3(-0.5f, -0.0f, +1.0f), green },
-	};
-
-	meshes[1]->CreateGeometry(vertices2, indices, 3, 3);
+	meshes[1]->CreateGeometry("helix.obj");
 
 	Vertex vertices3[] =
 	{
-		{ XMFLOAT3(-1.0f, +0.0f, -1.0f), red },
-		{ XMFLOAT3(+0.5f, -2.0f, -1.0f), blue },
-		{ XMFLOAT3(-2.5f, -2.0f, -1.0f), green },
+		{ XMFLOAT3(-1.0f, +0.0f, -1.0f), XMFLOAT3(0,0,-1),XMFLOAT2(0,0) },
+		{ XMFLOAT3(+0.5f, -2.0f, -1.0f), XMFLOAT3(0,0,-1),XMFLOAT2(0,0) },
+		{ XMFLOAT3(-2.5f, -2.0f, -1.0f), XMFLOAT3(0,0,-1),XMFLOAT2(0,0) },
 	};
 
 	meshes[2]->CreateGeometry(vertices3, indices, 3,3);
@@ -335,6 +342,15 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 	XMStoreFloat4x4(&tempRot, XMMatrixTranspose(tempRotMat));
 
 	entities[0]->setMat("rot", tempRot);
+
+	static float e2xRot = 0;
+	e2xRot += 1.f * deltaTime;
+	tempRotMat = XMLoadFloat4x4(&entities[1]->getMat("rot"));
+	tempRotMat = XMMatrixRotationAxis({ 0,1,0 }, e2xRot);
+
+	XMStoreFloat4x4(&tempRot, XMMatrixTranspose(tempRotMat));
+
+	entities[1]->setMat("rot", tempRot);
 }
 
 // --------------------------------------------------------

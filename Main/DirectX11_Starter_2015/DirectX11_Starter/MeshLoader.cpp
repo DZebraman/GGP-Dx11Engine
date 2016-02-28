@@ -8,16 +8,10 @@ using namespace DirectX;
 
 MeshLoader::MeshLoader(const char * path)
 {
-	XMFLOAT4 colors[] = {
-		XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-		XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
-		XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)
-	};
-	
-	int colorIncrement = 0;
-
 	numVerts = 0;
 	numInd = 0;
+
+
 
 	FILE * file = fopen(path, "r");
 	if (file != NULL) {
@@ -29,8 +23,19 @@ MeshLoader::MeshLoader(const char * path)
 			if (strcmp(lineHeader, "v") == 0) {
 				XMFLOAT3 tempVert;
 				fscanf(file, "%f %f %f\n", &tempVert.x, &tempVert.y, &tempVert.z);
-				Vertex butts = { tempVert, colors[colorIncrement++ % 3] };
+				Vertex butts = { tempVert, XMFLOAT3(0,0,-1),XMFLOAT2(0,0) };
+				vertPos.push_back(tempVert);
 				vertList.push_back(butts);
+			}
+			if (strcmp(lineHeader, "vn") == 0) {
+				XMFLOAT3 tempNRM;
+				fscanf(file, "%f %f %f\n", &tempNRM.x, &tempNRM.y, &tempNRM.z);
+				vertNrm.push_back(tempNRM);
+			}
+			if (strcmp(lineHeader, "vt") == 0) {
+				XMFLOAT2 tempUV;
+				fscanf(file, "%f %f\n", &tempUV.x, &tempUV.y);
+				vertUV.push_back(tempUV);
 			}
 			else if (strcmp(lineHeader, "f") == 0) {
 				unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
@@ -42,13 +47,29 @@ MeshLoader::MeshLoader(const char * path)
 				vertexIndex[1] -= 1;
 				vertexIndex[2] -= 1;
 
+				uvIndex[0] -= 1;
+				uvIndex[1] -= 1;
+				uvIndex[2] -= 1;
+
+				normalIndex[0] -= 1;
+				normalIndex[1] -= 1;
+				normalIndex[2] -= 1;
+
 				indicesList.push_back(vertexIndex[0]);
 				indicesList.push_back(vertexIndex[1]);
 				indicesList.push_back(vertexIndex[2]);
+
+				vertList[vertexIndex[0]].Normal = vertNrm[normalIndex[0]];
+				vertList[vertexIndex[1]].Normal = vertNrm[normalIndex[1]];
+				vertList[vertexIndex[2]].Normal = vertNrm[normalIndex[2]];
+
+				vertList[vertexIndex[0]].UV = vertUV[uvIndex[0]];
+				vertList[vertexIndex[1]].UV = vertUV[uvIndex[1]];
+				vertList[vertexIndex[2]].UV = vertUV[uvIndex[2]];
 			}
 		}
 
-		numVerts = vertList.size();
+		numVerts = vertPos.size();
 		numInd = indicesList.size();
 
 		vertArray = new Vertex[numVerts];

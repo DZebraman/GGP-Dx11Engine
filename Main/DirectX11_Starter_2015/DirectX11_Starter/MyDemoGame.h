@@ -6,7 +6,7 @@
 #include "Mesh.h"
 #include "Entity.h"
 #include "Camera.h"
-
+#include "Light.h"
 // Include run-time memory checking in debug builds, so 
 // we can be notified of memory leaks
 #if defined(DEBUG) || defined(_DEBUG)
@@ -64,6 +64,9 @@ private:
 	DirectX::XMFLOAT4X4 worldMatrix;
 	DirectX::XMFLOAT4X4 viewMatrix;
 	DirectX::XMFLOAT4X4 projectionMatrix;
+
+	DirectionalLight* lights;
+	//DirectionalLight sceneLight;
 
 	// Keeps track of the old mouse position.  Useful for 
 	// determining how far the mouse moved in a single frame.
