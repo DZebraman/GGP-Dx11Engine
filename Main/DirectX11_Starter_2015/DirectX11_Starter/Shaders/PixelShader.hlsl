@@ -16,6 +16,8 @@ struct VertexToPixel
 	matrix view			: VIEW;
 	matrix world		: WORLD;
 	float2 uv			: UV;
+	float3 tan			: TAN;
+	float3 biTan		: BITAN;
 };
 
 struct DirectionalLight {
@@ -45,7 +47,7 @@ float fresnel(float3 fwd, float3 normal, int exp, float intensity) {
 }
 
 
-#define celDivisions 3
+#define celDivisions 2
 
 float celShade(float input) {
 	return ceil(input * celDivisions) / celDivisions;
@@ -63,32 +65,12 @@ float celShade(float input) {
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	float3 tangent;
-	float3 binormal;
-	
-	float3 c1 = cross(input.normal, float3(0.0, 0.0, 1.0));
-	float3 c2 = cross(input.normal, float3(0.0, 1.0, 0.0));
-	
-	if (length(c1)>length(c2))
-	{
-		tangent = c1;
-	}
-	else
-	{
-		tangent = c2;
-	}
-	
-	tangent = normalize(tangent);
-	
-	binormal = cross(input.normal, tangent);
-	binormal = normalize(binormal);
 
 	float4 nrmTex = normalTexture.Sample(trilinear, input.uv);
 	nrmTex = 2 * nrmTex - 1;
 
-	float3 nrm = (nrmTex.x * tangent)+(nrmTex.y * binormal)+(nrmTex.z * input.normal);//mul(input.world,(2 * (nrmTex) - 1)));
-	
-
+	float3 nrm = (nrmTex.x * input.tan)+(nrmTex.y * input.biTan)+(nrmTex.z * input.normal);//mul(input.world,(2 * (nrmTex) - 1)));
+	nrm.y *= -1;
 	//return getLightAmount(light1, nrm);
 
 	float lightAmount1 = getLightAmount(light1, nrm);

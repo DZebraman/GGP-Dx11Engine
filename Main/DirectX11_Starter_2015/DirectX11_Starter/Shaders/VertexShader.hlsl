@@ -27,6 +27,8 @@ struct VertexShaderInput
 	float3 position		: POSITION;     // XYZ position
 	float3 normal		: NORMAL;		// normal vector
 	float2 uv			: UV;			// UV
+	float3 tan			: TAN;
+	float3 biTan		: BITAN;
 };
 
 // Struct representing the data we're sending down the pipeline
@@ -46,6 +48,8 @@ struct VertexToPixel
 	matrix view			: VIEW;
 	matrix world		: WORLD;
 	float2 uv			: UV;
+	float3 tan			: TAN;
+	float3 biTan		: BITAN;
 };
 
 // --------------------------------------------------------
@@ -79,7 +83,8 @@ VertexToPixel main( VertexShaderInput input )
 	output.view = view;
 	output.world = world;
 	output.uv = input.uv;
-
+	output.tan = input.tan;
+	output.biTan = input.biTan;
 	// Pass the color through 
 	// - The values will be interpolated per-pixel by the rasterizer
 	// - We don't need to alter it here, but we do need to send it to the pixel shader

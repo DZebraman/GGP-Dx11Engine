@@ -71,8 +71,51 @@ MeshLoader::MeshLoader(const char * path)
 
 				vertList[vertexIndex[2]].UV = vertUV[uvIndex[2]];
 				vertList[vertexIndex[2]].UV.y = 1 - vertUV[uvIndex[2]].y;
+
+				//tangent and binormal calc
+				//algorithm from http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
+
+				XMVECTOR v0Pos = XMLoadFloat3(&vertList[vertexIndex[0]].Position);
+				XMVECTOR v1Pos = XMLoadFloat3(&vertList[vertexIndex[1]].Position);
+				XMVECTOR v2Pos = XMLoadFloat3(&vertList[vertexIndex[2]].Position);
+
+				XMVECTOR uv0 = XMLoadFloat2(&vertList[vertexIndex[0]].UV);
+				XMVECTOR uv1 = XMLoadFloat2(&vertList[vertexIndex[1]].UV);
+				XMVECTOR uv2 = XMLoadFloat2(&vertList[vertexIndex[2]].UV);
+
+				XMVECTOR deltaPos1 = v1Pos - v0Pos;
+				XMVECTOR deltaPos2 = v2Pos - v0Pos;
+
+				XMVECTOR deltaU1 = uv1 - uv0;
+				XMVECTOR deltaU2 = uv2 - uv0;
+
+				XMFLOAT3 dP1,dP2; 
+				XMStoreFloat3(&dP1,deltaPos1);
+				XMStoreFloat3(&dP2, deltaPos2);
+
+				XMFLOAT2 dU1, dU2;
+				XMStoreFloat2(&dU1, deltaU1);
+				XMStoreFloat2(&dU2, deltaU2);
+
+				float r = 1.0f / (dU1.x * dU2.y - dU1.y * dU2.x);
+				XMVECTOR xmTangent = (deltaPos1 * dU2.y - deltaPos2 * dU1.y) * r;
+				XMVECTOR xmBitangent = (deltaPos2 * dU1.x - deltaPos1 * dU2.x) * r;
+
+				XMFLOAT3 tangent, bitangent;
+				XMStoreFloat3(&tangent, xmTangent);
+				XMStoreFloat3(&bitangent, xmBitangent);
+
+				vertTan.push_back(tangent);
+				vertTan.push_back(tangent);
+				vertTan.push_back(tangent);
+
+				vertBiTan.push_back(bitangent);
+				vertBiTan.push_back(bitangent);
+				vertBiTan.push_back(bitangent);
 			}
 		}
+
+		avgTanBiTan();
 
 		numVerts = vertPos.size();
 		numInd = indicesList.size();
@@ -108,6 +151,43 @@ MeshLoader::MeshLoader(const char * path)
 			}
 		}
 	}*/
+}
+
+void MeshLoader::avgTanBiTan() {
+	for (int i = 0; i < indicesList.size(); i+=3) {
+		XMVECTOR xmTan = XMLoadFloat3(&vertTan[indicesList[i]]);
+		xmTan += XMLoadFloat3(&vertTan[indicesList[i + 1]]);
+		xmTan += XMLoadFloat3(&vertTan[indicesList[i + 2]]);
+
+		xmTan /= 3;
+
+		XMVECTOR xmBiTan = XMLoadFloat3(&vertBiTan[indicesList[i]]);
+		xmBiTan += XMLoadFloat3(&vertBiTan[indicesList[i + 1]]);
+		xmBiTan += XMLoadFloat3(&vertBiTan[indicesList[i + 2]]);
+
+		xmBiTan /= 3;
+
+		XMFLOAT3 tan, biTan;
+		XMStoreFloat3(&tan, xmTan);
+		XMStoreFloat3(&biTan, xmBiTan);
+
+		/*vertTanActual.push_back(tan);
+		vertBiTanActual.push_back(biTan);*/
+
+		vertTan[indicesList[i + 0]] = tan;
+		vertTan[indicesList[i + 1]] = tan;
+		vertTan[indicesList[i + 2]] = tan;
+
+		vertBiTan[indicesList[i + 0]] = biTan;
+		vertBiTan[indicesList[i + 1]] = biTan;
+		vertBiTan[indicesList[i + 2]] = biTan;
+	}
+	for (int i = 0; i < indicesList.size(); i++) {
+		vertList[indicesList[i]].Tan = vertTan[indicesList[i]];
+	}
+	for (int i = 0; i < indicesList.size(); i++) {
+		vertList[indicesList[i]].BiTan = vertBiTan[indicesList[i]];
+	}
 }
 
 Vertex* MeshLoader::getVerts() {

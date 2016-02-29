@@ -15,6 +15,10 @@ private:
 	std::vector<Vertex> vertList;
 	std::vector<DirectX::XMFLOAT3> vertPos;
 	std::vector<DirectX::XMFLOAT3> vertNrm;
+	std::vector<DirectX::XMFLOAT3> vertTan;
+	std::vector<DirectX::XMFLOAT3> vertBiTan;
+	//std::vector<DirectX::XMFLOAT3> vertTanActual;
+	//std::vector<DirectX::XMFLOAT3> vertBiTanActual;
 	std::vector<DirectX::XMFLOAT2> vertUV;
 	std::vector<unsigned int> indicesList;
 
@@ -27,7 +31,7 @@ public:
 	unsigned int* getIndices();
 	unsigned int getNumVerts();
 	unsigned int getNumInd();
-
+	void avgTanBiTan();
 	MeshLoader(const char * path);
 	~MeshLoader();
 };
