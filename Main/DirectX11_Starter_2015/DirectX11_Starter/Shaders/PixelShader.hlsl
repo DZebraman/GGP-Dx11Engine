@@ -66,11 +66,15 @@ float celShade(float input) {
 float4 main(VertexToPixel input) : SV_TARGET
 {
 
+	float3 bitan = cross(input.tan,input.normal);
+	float3 tan = cross(input.biTan, input.normal);
+
 	float4 nrmTex = normalTexture.Sample(trilinear, input.uv);
 	nrmTex = 2 * nrmTex - 1;
+	nrmTex.y *= -1;
 
-	float3 nrm = (nrmTex.x * input.tan)+(nrmTex.y * input.biTan)+(nrmTex.z * input.normal);//mul(input.world,(2 * (nrmTex) - 1)));
-	nrm.y *= -1;
+	float3 nrm = (nrmTex.x * tan)+(nrmTex.y * bitan)+(nrmTex.z * input.normal);//mul(input.world,(2 * (nrmTex) - 1)));
+//	nrm.y *= -1;
 	//return getLightAmount(light1, nrm);
 
 	float lightAmount1 = getLightAmount(light1, nrm);
@@ -79,11 +83,11 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float4 ambColor = light1.AmbientColor + light2.AmbientColor;
 
 	//cel shading
-	/*lightAmount1 = celShade(lightAmount1);
-	lightAmount2 = celShade(lightAmount2);*/
+	lightAmount1 = celShade(lightAmount1);
+	lightAmount2 = celShade(lightAmount2);
 
 	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
-	float fresnelAmount = fresnel(fwd, nrm, 5.f,0.06f);
+	float fresnelAmount = fresnel(fwd, nrm, 12.f,0.2f);
 
 	//return fresnelAmount;
 	return saturate(((light1.DiffuseColor*lightAmount1) + (light2.DiffuseColor*lightAmount2)) + ambColor + fresnelAmount);

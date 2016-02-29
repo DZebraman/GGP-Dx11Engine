@@ -133,7 +133,7 @@ bool MyDemoGame::Init()
 
 	lights = new DirectionalLight[2];
 
-	lights[0] = { XMFLOAT4(0.1f,0.1,0.1f,1.f),XMFLOAT4(1,1,1,1),XMFLOAT3(0,0,1)};
+	lights[0] = { XMFLOAT4(0.04f,0,0.08f,1.f),XMFLOAT4(1,1,1,1),XMFLOAT3(0,0,1)};
 	lights[1] = { XMFLOAT4(0,0,0,1),XMFLOAT4(0.4,0.2,0.2,1),XMFLOAT3(1,0,0) };
 
 	pixelShader->SetData(
@@ -239,7 +239,7 @@ void MyDemoGame::CreateGeometry()
 	unsigned int indices[] = { 0, 1, 2};
 
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
-	meshes[0]->CreateGeometry("testModel.obj");
+	meshes[0]->CreateGeometry("sphere.obj");
 
 	meshes[1]->CreateGeometry("helix.obj");
 

@@ -90,7 +90,7 @@ MeshLoader::MeshLoader(const char * path)
 				XMVECTOR deltaU2 = uv2 - uv0;
 
 				XMFLOAT3 dP1,dP2; 
-				XMStoreFloat3(&dP1,deltaPos1);
+				XMStoreFloat3(&dP1, deltaPos1);
 				XMStoreFloat3(&dP2, deltaPos2);
 
 				XMFLOAT2 dU1, dU2;
