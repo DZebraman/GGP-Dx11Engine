@@ -73,9 +73,15 @@ float4 main(VertexToPixel input) : SV_TARGET
 	nrmTex = 2 * nrmTex - 1;
 	nrmTex.y *= -1;
 
-	float3 nrm = (nrmTex.x * tan)+(nrmTex.y * bitan)+(nrmTex.z * input.normal);//mul(input.world,(2 * (nrmTex) - 1)));
+	float3x3 TBN = transpose(float3x3(input.normal, input.tan, bitan));
+
+	//nrmTex = mul(input.world,nrmTex);
+
+	//float3 nrm = (nrmTex.x * tan)+(nrmTex.y * bitan)+(nrmTex.z * input.normal);//mul(input.world,(2 * (nrmTex) - 1)));
 //	nrm.y *= -1;
 	//return getLightAmount(light1, nrm);
+
+	float3 nrm = mul(nrmTex, TBN);
 
 	float lightAmount1 = getLightAmount(light1, nrm);
 	float lightAmount2 = getLightAmount(light2, nrm);
@@ -87,7 +93,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	lightAmount2 = celShade(lightAmount2);
 
 	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
-	float fresnelAmount = fresnel(fwd, nrm, 12.f,0.2f);
+	float fresnelAmount = fresnel(fwd, input.normal, 12.f,0.2f);
 
 	//return fresnelAmount;
 	return saturate(((light1.DiffuseColor*lightAmount1) + (light2.DiffuseColor*lightAmount2)) + ambColor + fresnelAmount);
