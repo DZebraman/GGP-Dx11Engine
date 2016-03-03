@@ -67,6 +67,7 @@ private:
 
 	//texture 
 	ID3D11ShaderResourceView* normalSRV;
+	ID3D11ShaderResourceView* diffSRV;
 	ID3D11ShaderResourceView* specSRV;
 	ID3D11SamplerState* samplerState;
 

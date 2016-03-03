@@ -1,7 +1,7 @@
-﻿D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(85,15-30): warning X3206: 'mul': implicit truncation of vector type
-D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(122,104): error X3000: syntax error: unexpected token ';'
-D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(122,9): error X3013: 'saturate': no matching 0 parameter intrinsic function
-D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(122,9): error X3013: Possible intrinsic functions are:
-D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(122,9): error X3013: saturate(float|half|double|min10float|min16float)
+﻿D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(75,43-51): warning X3206: implicit truncation of vector type
+D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(108,15-30): warning X3206: 'mul': implicit truncation of vector type
+D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(111,41-68): warning X3206: implicit truncation of vector type
+D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(48,18-56): warning X3571: pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
   
-  compilation failed; no code produced
+  compilation object save succeeded; see D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\Release\PixelShader.cso
+  DirectX11_Starter.vcxproj -> D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\Release\DirectX11_Starter.exe

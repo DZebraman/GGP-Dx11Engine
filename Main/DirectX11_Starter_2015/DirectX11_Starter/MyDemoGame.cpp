@@ -150,8 +150,9 @@ bool MyDemoGame::Init()
 
 	material = new Material(vertexShader, pixelShader);
 
-	CreateWICTextureFromFile(device, deviceContext, L"BrickNormal.jpg", 0, &normalSRV);
-	CreateWICTextureFromFile(device, deviceContext, L"BrickSpec.png", 0, &specSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_nrm.png", 0, &normalSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_spec.png", 0, &specSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_diff.png", 0, &diffSRV);
 
 	// Create the sampler state
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -164,6 +165,7 @@ bool MyDemoGame::Init()
 
 	pixelShader->SetShaderResourceView("normalTexture", normalSRV);
 	pixelShader->SetShaderResourceView("specTexture", specSRV);
+	pixelShader->SetShaderResourceView("diffTexture", diffSRV);
 	pixelShader->SetSamplerState("trilinear", samplerState);
 
 	// Successfully initialized
@@ -241,7 +243,7 @@ void MyDemoGame::CreateGeometry()
 	unsigned int indices[] = { 0, 1, 2};
 
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
-	meshes[0]->CreateGeometry("testModel.obj");
+	meshes[0]->CreateGeometry("sphere.obj");
 
 	meshes[1]->CreateGeometry("helix.obj");
 

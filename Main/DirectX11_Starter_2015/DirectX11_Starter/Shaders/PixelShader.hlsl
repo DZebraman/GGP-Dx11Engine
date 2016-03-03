@@ -30,6 +30,7 @@ struct DirectionalLight {
 
 Texture2D normalTexture    : register(t0);
 Texture2D specTexture	   : register(t1);
+Texture2D diffTexture	   : register(t2);
 SamplerState trilinear     : register(s0);
 
 cbuffer lightBuffer : register(b0) {
@@ -54,6 +55,26 @@ float celShade(float input) {
 	return ceil(input * celDivisions) / celDivisions;
 }
 
+//From http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
+float4 rgb2hsv(float4 c)
+{
+	float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+	float4 p = lerp(float4(c.bg, K.wz), float4(c.gb, K.xy), step(c.b, c.g));
+	float4 q = lerp(float4(p.xyw, c.r), float4(c.r, p.yzx), step(p.x, c.r));
+
+	float d = q.x - min(q.w, q.y);
+	float e = 1.0e-10;
+	return float4(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x,1);
+}
+
+//From http://lolengine.net/blog/2013/07/27/rgb-to-hsv-in-glsl
+float4 hsv2rgb(float4 c)
+{
+	float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+	float4 p = abs(frac(c.xxxx + K.xyzx) * 6.0 - K.wwww);
+	return float4(c.z * lerp(K.xxx, saturate(p - K.xxx), c.y),1);
+}
+
 // --------------------------------------------------------
 // The entry point (main method) for our pixel shader
 // 
@@ -76,6 +97,8 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float4 specColor = float4(0,0,0,1);
 
 
+	float4 objColor = float4(0.6, 1, 0.8, 1);
+
 	float4 nrmTex = normalTexture.Sample(trilinear, input.uv);
 	nrmTex = 2 * nrmTex - 1;
 	//nrmTex.y *= -1;
@@ -85,25 +108,26 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float3 nrm = mul(nrmTex, TBN);
 	nrm.y *= -1;
 
-	float3 LightReflect = normalize(reflect(light1.Direction, nrm));
-	float SpecularFactor1 = dot(nrm - eyeWorldPos, LightReflect);
-	LightReflect = normalize(reflect(light2.Direction, nrm));
-	float SpecularFactor2 = dot(nrm -eyeWorldPos, LightReflect);
+	float3 halfAngle = normalize(normalize(eyeWorldPos - input.position) - light1.Direction);
+
+	float3 LightReflect = normalize(reflect(light1.Direction, input.normal));
+	float SpecularFactor1 = dot(nrm, halfAngle);
+	//LightReflect = normalize(reflect(light2.Direction, input.normal));
+	float SpecularFactor2 = dot(input.normal -eyeWorldPos, LightReflect);
 
 	if (SpecularFactor1 > 0) {
-		SpecularFactor1 = pow(SpecularFactor1, 32);
-		specColor += float4(light1.DiffuseColor * 1 * SpecularFactor1);
-	}if (SpecularFactor2 > 0) {
-		SpecularFactor2 = pow(SpecularFactor2, 32);
+		SpecularFactor1 = pow(SpecularFactor1, 8);
+		specColor += float4(light1.DiffuseColor * 16 * SpecularFactor1);
+	}/*if (SpecularFactor2 > 0) {
+		SpecularFactor2 = pow(SpecularFactor2, 64);
 		specColor += float4(light2.DiffuseColor * 1 * SpecularFactor2);
-	}
-
-	specColor = saturate(specColor);
-
+	}*/
 
 	float4 specTex = specTexture.Sample(trilinear, input.uv);
+	float4 diffTex = diffTexture.Sample(trilinear, input.uv);
 
-	//return specTex * specColor;
+	specColor = saturate(specColor);
+	//return saturate(specColor * specTex);
 
 	/*float lightAmount1 = getLightAmount(light1, nrm);
 	float lightAmount2 = getLightAmount(light2, nrm);*/
@@ -116,10 +140,16 @@ float4 main(VertexToPixel input) : SV_TARGET
 	/*lightAmount1 = celShade(lightAmount1);
 	lightAmount2 = celShade(lightAmount2);*/
 
-	float fresnelAmount = fresnel(fwd, nrm, 12.f,0.2f);
+	float fresnelAmount = fresnel(fwd, nrm, 12.f,0.1f);
+
+	float4 inHColor = rgb2hsv(diffTex);
+	inHColor.x *= -1;
+	inHColor = hsv2rgb(inHColor);
+
+	//return inHColor * specColor*pow(specTex, 2);
 
 	//return fresnelAmount;
-	return saturate(((light1.DiffuseColor*lightAmount1) + (light2.DiffuseColor*lightAmount2)) + ambColor + fresnelAmount * (specColor*specTex));
+	return saturate((light1.DiffuseColor*lightAmount1 * diffTex) + ambColor + (fresnelAmount*specColor) + (specColor*pow(specTex,2) * inHColor));
 	return  float4(input.normal,1);
 }
 
