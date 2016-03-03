@@ -29,6 +29,7 @@ struct DirectionalLight {
 #define numLights 2
 
 Texture2D normalTexture    : register(t0);
+Texture2D specTexture	   : register(t1);
 SamplerState trilinear     : register(s0);
 
 cbuffer lightBuffer : register(b0) {
@@ -68,6 +69,13 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float3 bitan = cross(input.tan,input.normal);
 	float3 tan = cross(input.biTan, input.normal);
 
+	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
+	float3 eyeWorldPos = float3(input.view[0][3], input.view[1][3], input.view[2][3]);
+	//float3 eyeWorldPos = input.view[3];
+
+	float4 specColor = float4(0,0,0,1);
+
+
 	float4 nrmTex = normalTexture.Sample(trilinear, input.uv);
 	nrmTex = 2 * nrmTex - 1;
 	//nrmTex.y *= -1;
@@ -77,6 +85,28 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float3 nrm = mul(nrmTex, TBN);
 	nrm.y *= -1;
 
+	float3 LightReflect = normalize(reflect(light1.Direction, nrm));
+	float SpecularFactor1 = dot(nrm - eyeWorldPos, LightReflect);
+	LightReflect = normalize(reflect(light2.Direction, nrm));
+	float SpecularFactor2 = dot(nrm -eyeWorldPos, LightReflect);
+
+	if (SpecularFactor1 > 0) {
+		SpecularFactor1 = pow(SpecularFactor1, 32);
+		specColor += float4(light1.DiffuseColor * 1 * SpecularFactor1);
+	}if (SpecularFactor2 > 0) {
+		SpecularFactor2 = pow(SpecularFactor2, 32);
+		specColor += float4(light2.DiffuseColor * 1 * SpecularFactor2);
+	}
+
+	specColor = saturate(specColor);
+
+
+	float4 specTex = specTexture.Sample(trilinear, input.uv);
+
+	//return specTex * specColor;
+
+	/*float lightAmount1 = getLightAmount(light1, nrm);
+	float lightAmount2 = getLightAmount(light2, nrm);*/
 	float lightAmount1 = getLightAmount(light1, nrm);
 	float lightAmount2 = getLightAmount(light2, nrm);
 
@@ -86,11 +116,10 @@ float4 main(VertexToPixel input) : SV_TARGET
 	/*lightAmount1 = celShade(lightAmount1);
 	lightAmount2 = celShade(lightAmount2);*/
 
-	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
-	float fresnelAmount = fresnel(fwd, input.normal, 12.f,0.2f);
+	float fresnelAmount = fresnel(fwd, nrm, 12.f,0.2f);
 
 	//return fresnelAmount;
-	return saturate(((light1.DiffuseColor*lightAmount1) + (light2.DiffuseColor*lightAmount2)) + ambColor + fresnelAmount);
+	return saturate(((light1.DiffuseColor*lightAmount1) + (light2.DiffuseColor*lightAmount2)) + ambColor + fresnelAmount * (specColor*specTex));
 	return  float4(input.normal,1);
 }
 

@@ -151,6 +151,7 @@ bool MyDemoGame::Init()
 	material = new Material(vertexShader, pixelShader);
 
 	CreateWICTextureFromFile(device, deviceContext, L"BrickNormal.jpg", 0, &normalSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"BrickSpec.png", 0, &specSRV);
 
 	// Create the sampler state
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -162,6 +163,7 @@ bool MyDemoGame::Init()
 	device->CreateSamplerState(&samplerDesc, &samplerState);
 
 	pixelShader->SetShaderResourceView("normalTexture", normalSRV);
+	pixelShader->SetShaderResourceView("specTexture", specSRV);
 	pixelShader->SetSamplerState("trilinear", samplerState);
 
 	// Successfully initialized
