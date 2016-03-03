@@ -83,8 +83,8 @@ VertexToPixel main( VertexShaderInput input )
 	output.view = view;
 	output.world = world;
 	output.uv = input.uv;
-	output.tan = input.tan;
-	output.biTan = input.biTan;
+	output.tan = mul(input.tan,(float3x3)world);
+	output.biTan = mul(input.biTan, (float3x3)world);
 	// Pass the color through 
 	// - The values will be interpolated per-pixel by the rasterizer
 	// - We don't need to alter it here, but we do need to send it to the pixel shader

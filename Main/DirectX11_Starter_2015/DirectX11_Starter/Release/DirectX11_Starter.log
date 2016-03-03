@@ -1,12 +1,5 @@
-﻿D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(84,15-30): warning X3206: 'mul': implicit truncation of vector type
-D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(46,18-56): warning X3571: pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+﻿Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(77,15-30): warning X3206: 'mul': implicit truncation of vector type
+Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(46,18-56): warning X3571: pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
   
-  compilation object save succeeded; see D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\Release\PixelShader.cso
-  MyDemoGame.cpp
-MyDemoGame.cpp(137): warning C4305: 'argument': truncation from 'double' to 'float'
-  Generating code
-  1 of 2526 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  DirectX11_Starter.vcxproj -> D:\Users\jrp3024\GGP\Main\DirectX11_Starter_2015\Release\DirectX11_Starter.exe
+  compilation object save succeeded; see Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Release\PixelShader.cso
+  DirectX11_Starter.vcxproj -> Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Release\DirectX11_Starter.exe

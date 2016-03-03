@@ -350,7 +350,7 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 	if (GetAsyncKeyState('U') & 0x8000) { vTempRot.z -= (2 * deltaTime); }
 
 	//tempRotMat *= XMMatrixRotationX(vTempRot.x) * XMMatrixRotationY(vTempRot.y) * XMMatrixRotationZ(vTempRot.z);
-	tempRotMat *= XMMatrixRotationRollPitchYaw(vTempRot.x, vTempRot.y, vTempRot.z);
+	tempRotMat = XMMatrixRotationRollPitchYaw(vTempRot.x, vTempRot.y, vTempRot.z) * tempRotMat;
 	if (GetAsyncKeyState('R') & 0x8000) { tempRotMat = XMMatrixIdentity(); }
 
 

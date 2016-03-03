@@ -11,7 +11,7 @@ class MeshLoader
 {
 private:
 	Vertex* vertArray;
-	unsigned int* indices;
+	unsigned int* indexArray;
 	std::vector<Vertex> vertList;
 	std::vector<DirectX::XMFLOAT3> vertPos;
 	std::vector<DirectX::XMFLOAT3> vertNrm;
@@ -20,7 +20,7 @@ private:
 	//std::vector<DirectX::XMFLOAT3> vertTanActual;
 	//std::vector<DirectX::XMFLOAT3> vertBiTanActual;
 	std::vector<DirectX::XMFLOAT2> vertUV;
-	std::vector<unsigned int> indicesList;
+	std::vector<unsigned int> indices;
 
 
 	unsigned int numVerts;

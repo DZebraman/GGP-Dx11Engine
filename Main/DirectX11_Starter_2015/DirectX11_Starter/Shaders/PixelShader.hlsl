@@ -65,23 +65,17 @@ float celShade(float input) {
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
-
 	float3 bitan = cross(input.tan,input.normal);
 	float3 tan = cross(input.biTan, input.normal);
 
 	float4 nrmTex = normalTexture.Sample(trilinear, input.uv);
 	nrmTex = 2 * nrmTex - 1;
-	nrmTex.y *= -1;
+	//nrmTex.y *= -1;
 
-	float3x3 TBN = transpose(float3x3(input.normal, input.tan, bitan));
-
-	//nrmTex = mul(input.world,nrmTex);
-
-	//float3 nrm = (nrmTex.x * tan)+(nrmTex.y * bitan)+(nrmTex.z * input.normal);//mul(input.world,(2 * (nrmTex) - 1)));
-//	nrm.y *= -1;
-	//return getLightAmount(light1, nrm);
+	float3x3 TBN = float3x3(input.tan, bitan, input.normal);
 
 	float3 nrm = mul(nrmTex, TBN);
+	nrm.y *= -1;
 
 	float lightAmount1 = getLightAmount(light1, nrm);
 	float lightAmount2 = getLightAmount(light2, nrm);
@@ -89,8 +83,8 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float4 ambColor = light1.AmbientColor + light2.AmbientColor;
 
 	//cel shading
-	lightAmount1 = celShade(lightAmount1);
-	lightAmount2 = celShade(lightAmount2);
+	/*lightAmount1 = celShade(lightAmount1);
+	lightAmount2 = celShade(lightAmount2);*/
 
 	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
 	float fresnelAmount = fresnel(fwd, input.normal, 12.f,0.2f);
