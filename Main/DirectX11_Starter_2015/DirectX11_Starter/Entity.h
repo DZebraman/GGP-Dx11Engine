@@ -27,6 +27,7 @@ public:
 	void setVec(std::string vecName, XMFLOAT3 newVec);
 	void PrepareMaterial(XMFLOAT4X4 * viewMat, XMFLOAT4X4 * projMat);
 	void Draw(XMFLOAT4X4 * viewMat, XMFLOAT4X4 * projMat);
+	void setMaterial (Material* mat);
 	~Entity();
 };
 

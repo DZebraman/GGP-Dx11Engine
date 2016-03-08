@@ -75,3 +75,4 @@ XMFLOAT4X4 Entity::getMat(std::string matName) {return matLookUp[matName];}
 void Entity::setMat(std::string matName, XMFLOAT4X4 newMat) {matLookUp[matName] = newMat;}
 XMFLOAT3 Entity::getVec(std::string vecName) {return vecLookUp[vecName];}
 void Entity::setVec(std::string vecName, XMFLOAT3 newVec) {vecLookUp[vecName] = newVec;}
+void Entity::setMaterial(Material* mat) { material = mat; }

@@ -124,8 +124,7 @@ bool MyDemoGame::Init()
 	// with and set up matrices so we can see how to pass data to the GPU.
 	//  - For your own projects, feel free to expand/replace these.
 	LoadShaders(); 
-	CreateGeometry();
-	CreateMatrices();
+	
 
 	// Tell the input assembler stage of the pipeline what kind of
 	// geometric primitives we'll be using and how to interpret them
@@ -133,7 +132,7 @@ bool MyDemoGame::Init()
 
 	lights = new DirectionalLight[2];
 
-	lights[0] = { XMFLOAT4(0.04f,0,0.08f,1.f),XMFLOAT4(1,1,1,1),XMFLOAT3(0,0.2f,0.7f)};
+	lights[0] = { XMFLOAT4(0.04f,0,0.08f,1.f),XMFLOAT4(1,1,1,1),XMFLOAT3(0,0,1)};
 	lights[1] = { XMFLOAT4(0,0,0,1),XMFLOAT4(0.8,0.2,0.2,1),XMFLOAT3(1,0,0) };
 
 	pixelShader->SetData(
@@ -148,11 +147,10 @@ bool MyDemoGame::Init()
 	camera = new Camera();
 	camera->updateProjection(aspectRatio);
 
-	material = new Material(vertexShader, pixelShader);
-
 	CreateWICTextureFromFile(device, deviceContext, L"wood_nrm.png", 0, &normalSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"wood_spec.png", 0, &specSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"wood_diff.png", 0, &diffSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_gloss.png", 0, &glossSRV);
 
 	// Create the sampler state
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -163,12 +161,22 @@ bool MyDemoGame::Init()
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	device->CreateSamplerState(&samplerDesc, &samplerState);
 
-	pixelShader->SetShaderResourceView("normalTexture", normalSRV);
-	pixelShader->SetShaderResourceView("specTexture", specSRV);
-	pixelShader->SetShaderResourceView("diffTexture", diffSRV);
-	pixelShader->SetSamplerState("trilinear", samplerState);
+	material = new Material(vertexShader, pixelShader, samplerState);
+	material2 = new Material(vertexShader, pixelShader2, samplerState);
 
-	// Successfully initialized
+	//sends the srvs to the material
+	material->setSRV("normalTexture", normalSRV);
+	material->setSRV("specTexture", specSRV);
+	material->setSRV("diffTexture", diffSRV);
+	material->setSRV("glossTexture", glossSRV);
+	material->setup();
+
+	material2->setSRV("specTexture", specSRV);
+	material2->setup();
+
+
+	CreateGeometry();
+	CreateMatrices();
 	return true;
 }
 
@@ -185,6 +193,9 @@ void MyDemoGame::LoadShaders()
 
 	pixelShader = new SimplePixelShader(device, deviceContext);
 	pixelShader->LoadShaderFile(L"PixelShader.cso");
+
+	pixelShader2 = new SimplePixelShader(device, deviceContext);
+	pixelShader2->LoadShaderFile(L"PixelShader2.cso");
 }
 
 
@@ -203,8 +214,13 @@ void MyDemoGame::CreateGeometry()
 	entities = new Entity*[numMeshes];
 	for (int i = 0; i < numMeshes; i++) {
 		meshes[i] = new Mesh(device, deviceContext);
-		entities[i] = new Entity(meshes[i],vertexShader,pixelShader, material);
+		if(i == 1)
+			entities[i] = new Entity(meshes[i], vertexShader, pixelShader2, material2);
+		else
+			entities[i] = new Entity(meshes[i],vertexShader,pixelShader, material2);
 	}
+
+	entities[1]->setMaterial(material2);
 
 	XMFLOAT3 pos = XMFLOAT3(-5.f, 0.f, 10.f);
 	XMFLOAT3 dir = XMFLOAT3(0.f, 0.f, 1.f);
@@ -245,7 +261,7 @@ void MyDemoGame::CreateGeometry()
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
 	meshes[0]->CreateGeometry("sphere.obj");
 
-	meshes[1]->CreateGeometry("helix.obj");
+	meshes[1]->CreateGeometry("sphere.obj");
 
 	Vertex vertices3[] =
 	{

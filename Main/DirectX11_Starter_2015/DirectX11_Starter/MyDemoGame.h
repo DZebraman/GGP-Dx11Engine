@@ -51,6 +51,7 @@ private:
 	Mesh** meshes;
 	Camera* camera;
 	Material* material;
+	Material* material2;
 
 	// Buffers to hold actual geometry data
 	ID3D11Buffer* vertexBuffer;
@@ -59,6 +60,7 @@ private:
 	// Wrappers for DirectX shaders to provide simplified functionality
 	SimpleVertexShader* vertexShader;
 	SimplePixelShader* pixelShader;
+	SimplePixelShader* pixelShader2;
 
 	// The matrices to go from model space to screen space
 	DirectX::XMFLOAT4X4 worldMatrix;
@@ -67,6 +69,7 @@ private:
 
 	//texture 
 	ID3D11ShaderResourceView* normalSRV;
+	ID3D11ShaderResourceView* glossSRV;
 	ID3D11ShaderResourceView* diffSRV;
 	ID3D11ShaderResourceView* specSRV;
 	ID3D11SamplerState* samplerState;
