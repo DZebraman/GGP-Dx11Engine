@@ -353,6 +353,8 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 
 	camera->update(deltaTime);
 
+	//Use this here for movement. feed in an XMFLOAT3 and all should be well.
+
 	XMFLOAT3 newPos = entities[1]->getVec("pos");
 	newPos.x += sin(totalTime) * deltaTime;
 
@@ -473,7 +475,7 @@ void MyDemoGame::OnMouseMove(WPARAM btnState, int x, int y)
 {
 	//only change view with mouse is pressed
 	if(canMoveCam)
-		camera->mouseRotation((y - prevMousePos.y) * rotScale, (x - prevMousePos.x) * rotScale);
+		camera->setRotation((y - prevMousePos.y) * rotScale, (x - prevMousePos.x) * rotScale);
 
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;

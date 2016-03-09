@@ -18,9 +18,10 @@ private:
 public:
 	Camera();
 
-	void mouseRotation(float _xRot, float _yRot);
+	void setRotation(float _xRot, float _yRot);
 	void update(float deltaTime);
 	void updateProjection(float aspectRatio);
+	void setPos(XMFLOAT3 _pos);
 
 	XMFLOAT4X4 * getViewMatrix();
 	XMFLOAT4X4 * getProjMatrix();

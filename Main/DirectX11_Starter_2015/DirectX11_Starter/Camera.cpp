@@ -11,6 +11,10 @@ Camera::Camera()
 	yRot = 0;
 }
 
+void Camera::setPos(XMFLOAT3 _pos) {
+	pos = _pos;
+}
+
 void Camera::update(float deltaTime) {
 	XMMATRIX mRot = XMMatrixRotationRollPitchYaw(xRot, yRot, 0);
 	XMVECTOR xmFwd = XMVector3Transform(XMLoadFloat3(&fwd), mRot);
@@ -45,7 +49,7 @@ void Camera::updateProjection(float aspectRatio) {
 	XMStoreFloat4x4(&mProjMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
 }
 
-void Camera::mouseRotation(float _xRot, float _yRot) {
+void Camera::setRotation(float _xRot, float _yRot) {
 	xRot = _xRot;
 	yRot = _yRot;
 }
