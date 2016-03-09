@@ -132,7 +132,7 @@ bool MyDemoGame::Init()
 
 	lights = new DirectionalLight[2];
 
-	lights[0] = { XMFLOAT4(0.04f,0,0.08f,1.f),XMFLOAT4(1,1,1,1),XMFLOAT3(0,0,1)};
+	lights[0] = { XMFLOAT4(0.02f,0,0.04f,1.f),XMFLOAT4(1,1,1,1),XMFLOAT3(0,0,1)};
 	lights[1] = { XMFLOAT4(0,0,0,1),XMFLOAT4(0.8,0.2,0.2,1),XMFLOAT3(1,0,0) };
 
 	pixelShader->SetData(
@@ -147,10 +147,10 @@ bool MyDemoGame::Init()
 	camera = new Camera();
 	camera->updateProjection(aspectRatio);
 
-	CreateWICTextureFromFile(device, deviceContext, L"wood_nrm.png", 0, &normalSRV);
-	CreateWICTextureFromFile(device, deviceContext, L"wood_spec.png", 0, &specSRV);
-	CreateWICTextureFromFile(device, deviceContext, L"wood_diff.png", 0, &diffSRV);
-	CreateWICTextureFromFile(device, deviceContext, L"wood_gloss.png", 0, &glossSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_normal.png", 0, &normalSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_specular.png", 0, &specSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_diffuse.png", 0, &diffSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_gloss.png", 0, &glossSRV);
 
 	// Create the sampler state
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -259,7 +259,7 @@ void MyDemoGame::CreateGeometry()
 	unsigned int indices[] = { 0, 1, 2};
 
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
-	meshes[0]->CreateGeometry("sphere.obj");
+	meshes[0]->CreateGeometry("testModel.obj");
 
 	meshes[1]->CreateGeometry("sphere.obj");
 

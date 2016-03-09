@@ -72,7 +72,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float3 bitan = cross(input.tan,input.normal);
 	float3 tan = cross(input.biTan, input.normal);
 
-	float2 uvScale = input.uv * 1;
+	float2 uvScale = input.uv * 2;
 
 	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
 	float3 eyeWorldPos = float3(input.view[0][3], input.view[1][3], input.view[2][3]);
@@ -95,26 +95,25 @@ float4 main(VertexToPixel input) : SV_TARGET
 	nrm = lerp(input.normal, nrm, 0.75f);
 	//nrm.y *= -1;
 
-	float3 halfAngle = normalize(normalize(eyeWorldPos - input.position) - light1.Direction);
+	float3 halfAngle = -normalize(fwd + light1.Direction);
 
-	float3 LightReflect = normalize(reflect(light1.Direction, input.normal));
-	float SpecularFactor1 = dot(lerp(input.normal,nrm,0.25f), halfAngle);
-	//LightReflect = normalize(reflect(light2.Direction, input.normal));
-	float SpecularFactor2 = dot(input.normal -eyeWorldPos, LightReflect);
+	float3 LightReflect = normalize(reflect(light1.Direction, nrm));
+	float SpecularFactor1 = dot(lerp(input.normal,nrm,0.9f), halfAngle);
+	float SpecularFactor2 = dot(input.normal -eyeWorldPos, halfAngle);
 
 	if (SpecularFactor1 > 0) {
-		SpecularFactor1 = pow(SpecularFactor1, lerp(16, 64,1-glossTex.x));
+		SpecularFactor1 = pow(SpecularFactor1, lerp(2, 64, glossTex.x));
 		specColor += float4(light1.DiffuseColor * 1 * SpecularFactor1);
 	}if (SpecularFactor2 > 0) {
-		SpecularFactor2 = pow(SpecularFactor1, lerp(16, 64,1-glossTex.x));
+		SpecularFactor2 = pow(SpecularFactor1, lerp(1, 64,glossTex.x));
 		specColor += float4(light2.DiffuseColor * 1 * SpecularFactor2);
 	}
 
 	float4 specTex = specTexture.Sample(trilinear, uvScale);
+
 	float4 diffTex = diffTexture.Sample(trilinear, uvScale);
 
-	specColor = saturate(specColor);
-	//return saturate(specColor * specTex);
+	//return (SpecularFactor1 * 1 * specTex);
 
 	/*float lightAmount1 = getLightAmount(light1, nrm);
 	float lightAmount2 = getLightAmount(light2, nrm);*/
@@ -124,15 +123,18 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float4 ambColor = light1.AmbientColor + light2.AmbientColor;
 
 	//cel shading
-	lightAmount1 = celShade(lightAmount1);
-	lightAmount2 = celShade(lightAmount2);
+	/*lightAmount1 = celShade(lightAmount1);
+	lightAmount2 = celShade(lightAmount2);*/
 
 	float fresnelAmount = fresnel(fwd, nrm, 4.f,0.35f);
 
 	//return inHColor * specColor*pow(specTex, 2);
 
 	//return fresnelAmount;
-	return ((light1.DiffuseColor*lightAmount1 + light2.DiffuseColor*lightAmount2) * diffTex) + ambColor  + (fresnelAmount*float4(0.3f,0.2f,0.6f,1)) + (specColor * specTex);
+	return ((light1.DiffuseColor*lightAmount1 + light2.DiffuseColor*lightAmount2) * diffTex)
+		+ ambColor
+		+ (fresnelAmount)
+		+ (SpecularFactor1 * lerp(0.75f,2.f,glossTex)* specTex);
 	return  float4(input.normal,1);
 }
 

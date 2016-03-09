@@ -1,3 +1,15 @@
-﻿  MyDemoGame.cpp
+﻿Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(94,15-30): warning X3206: 'mul': implicit truncation of vector type
+Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(98,41-68): warning X3206: implicit truncation of vector type
+Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(105,37-68): warning X3206: implicit truncation of vector type
+Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(106,33-55): warning X3206: implicit truncation of vector type
+Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(108,8-72): warning X3206: implicit truncation of vector type
+  
+  compilation object save succeeded; see Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Debug\PixelShader.cso
+  compilation object save succeeded; see Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Debug\PixelShader2.cso
+  MyDemoGame.cpp
 q:\classes\3-2\ggp\engine\main\directx11_starter_2015\directx11_starter\mydemogame.cpp(136): warning C4305: 'argument': truncation from 'double' to 'float'
+  Material.cpp
+  Entitiy.cpp
+  Generating Code...
+  LINK : Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Debug\DirectX11_Starter.exe not found or not built by the last incremental link; performing full link
   DirectX11_Starter.vcxproj -> Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Debug\DirectX11_Starter.exe
