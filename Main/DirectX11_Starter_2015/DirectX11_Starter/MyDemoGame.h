@@ -68,6 +68,7 @@ private:
 	DirectX::XMFLOAT4X4 projectionMatrix;
 
 	//texture 
+	ID3D11ShaderResourceView* skySRV;
 	ID3D11ShaderResourceView* normalSRV;
 	ID3D11ShaderResourceView* glossSRV;
 	ID3D11ShaderResourceView* diffSRV;

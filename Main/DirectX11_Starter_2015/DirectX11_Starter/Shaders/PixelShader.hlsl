@@ -6,12 +6,8 @@
 // - Each variable must have a semantic, which defines its usage
 struct VertexToPixel
 {
-	// Data type
-	//  |
-	//  |   Name          Semantic
-	//  |    |                |
-	//  v    v                v
 	float4 position		: SV_POSITION;
+	float3 worldPos		: WORLDPOS;
 	float3 normal		: NORMAL;
 	matrix view			: VIEW;
 	matrix world		: WORLD;
@@ -32,6 +28,7 @@ Texture2D normalTexture    : register(t0);
 Texture2D specTexture	   : register(t1);
 Texture2D diffTexture	   : register(t2);
 Texture2D glossTexture	   : register(t3);
+TextureCube cubeMap : register(t4);
 SamplerState trilinear     : register(s0);
 
 cbuffer lightBuffer : register(b0) {
@@ -56,7 +53,6 @@ float celShade(float input) {
 	return ceil(input * celDivisions) / celDivisions;
 }
 
-
 // --------------------------------------------------------
 // The entry point (main method) for our pixel shader
 // 
@@ -72,14 +68,13 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float3 bitan = cross(input.tan,input.normal);
 	float3 tan = cross(input.biTan, input.normal);
 
-	float2 uvScale = input.uv * 2;
+	float2 uvScale = input.uv * 1;
 
 	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
-	float3 eyeWorldPos = float3(input.view[0][3], input.view[1][3], input.view[2][3]);
-	//float3 eyeWorldPos = input.view[3];
+	//float3 eyeWorldPos = float3(input.view[0][3], input.view[1][3], input.view[2][3]);
+	float3 eyeWorldPos = input.view[3];
 
 	float4 specColor = float4(0,0,0,1);
-
 
 	float4 objColor = float4(0.6, 1, 0.8, 1);
 
@@ -97,15 +92,19 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	float3 halfAngle = -normalize(fwd + light1.Direction);
 
+	float4 reflectionColor = cubeMap.Sample(
+		trilinear,
+		reflect(-normalize(eyeWorldPos - input.worldPos), input.normal));
+
 	float3 LightReflect = normalize(reflect(light1.Direction, nrm));
-	float SpecularFactor1 = dot(lerp(input.normal,nrm,0.9f), halfAngle);
+	float SpecularFactor1 = dot(lerp(input.normal,nrm,0.6f), halfAngle);
 	float SpecularFactor2 = dot(input.normal -eyeWorldPos, halfAngle);
 
 	if (SpecularFactor1 > 0) {
-		SpecularFactor1 = pow(SpecularFactor1, lerp(2, 64, glossTex.x));
+		SpecularFactor1 = pow(SpecularFactor1, lerp(2, 32, glossTex.x));
 		specColor += float4(light1.DiffuseColor * 1 * SpecularFactor1);
 	}if (SpecularFactor2 > 0) {
-		SpecularFactor2 = pow(SpecularFactor1, lerp(1, 64,glossTex.x));
+		SpecularFactor2 = pow(SpecularFactor1, lerp(2, 32,glossTex.x));
 		specColor += float4(light2.DiffuseColor * 1 * SpecularFactor2);
 	}
 
@@ -126,15 +125,16 @@ float4 main(VertexToPixel input) : SV_TARGET
 	/*lightAmount1 = celShade(lightAmount1);
 	lightAmount2 = celShade(lightAmount2);*/
 
-	float fresnelAmount = fresnel(fwd, nrm, 4.f,0.35f);
+	float fresnelAmount = fresnel(fwd, nrm, 4.f,0.5f);
 
 	//return inHColor * specColor*pow(specTex, 2);
+	return reflectionColor;
 
 	//return fresnelAmount;
 	return ((light1.DiffuseColor*lightAmount1 + light2.DiffuseColor*lightAmount2) * diffTex)
 		+ ambColor
-		+ (fresnelAmount)
-		+ (SpecularFactor1 * lerp(0.75f,2.f,glossTex)* specTex);
+		+ (fresnelAmount * reflectionColor)
+		+ (SpecularFactor1 * lerp(0.75f,2.f,glossTex)* specTex * reflectionColor);
 	return  float4(input.normal,1);
 }
 

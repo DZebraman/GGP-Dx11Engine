@@ -24,6 +24,7 @@
 #include "MyDemoGame.h"
 #include "Vertex.h"
 #include "WICTextureLoader.h"
+#include "DDSTextureLoader.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -147,10 +148,15 @@ bool MyDemoGame::Init()
 	camera = new Camera();
 	camera->updateProjection(aspectRatio);
 
-	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_normal.png", 0, &normalSRV);
+	/*CreateWICTextureFromFile(device, deviceContext, L"Test/metal_normal.png", 0, &normalSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_specular.png", 0, &specSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_diffuse.png", 0, &diffSRV);
-	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_gloss.png", 0, &glossSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_gloss.png", 0, &glossSRV);*/
+	CreateWICTextureFromFile(device, deviceContext, L"wood_nrm.png", 0, &normalSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_spec.png", 0, &specSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_diff.png", 0, &diffSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_gloss.png", 0, &glossSRV);
+	DirectX::CreateDDSTextureFromFile(device, deviceContext, L"SunnyCubeMap.dds", 0, &skySRV);
 
 	// Create the sampler state
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -169,6 +175,7 @@ bool MyDemoGame::Init()
 	material->setSRV("specTexture", specSRV);
 	material->setSRV("diffTexture", diffSRV);
 	material->setSRV("glossTexture", glossSRV);
+	material->setSRV("cubeMap", skySRV);
 	material->setup();
 
 	material2->setSRV("specTexture", specSRV);
@@ -259,7 +266,7 @@ void MyDemoGame::CreateGeometry()
 	unsigned int indices[] = { 0, 1, 2};
 
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
-	meshes[0]->CreateGeometry("testModel.obj");
+	meshes[0]->CreateGeometry("sphere.obj");
 
 	meshes[1]->CreateGeometry("sphere.obj");
 
