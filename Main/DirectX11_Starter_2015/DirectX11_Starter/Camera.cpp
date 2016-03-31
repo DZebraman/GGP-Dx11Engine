@@ -54,6 +54,8 @@ void Camera::setRotation(float _xRot, float _yRot) {
 	yRot = _yRot;
 }
 
+XMFLOAT3 Camera::getPos() { return pos; }
+
 XMFLOAT4X4* Camera::getViewMatrix() { return &mViewMatrix; }
 XMFLOAT4X4* Camera::getProjMatrix() { return &mProjMatrix; }
 Camera::~Camera()

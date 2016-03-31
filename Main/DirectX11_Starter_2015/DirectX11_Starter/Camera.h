@@ -26,6 +26,8 @@ public:
 	XMFLOAT4X4 * getViewMatrix();
 	XMFLOAT4X4 * getProjMatrix();
 
+	XMFLOAT3 getPos();
+
 	~Camera();
 };
 

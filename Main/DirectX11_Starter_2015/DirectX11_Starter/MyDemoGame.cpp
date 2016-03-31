@@ -156,7 +156,8 @@ bool MyDemoGame::Init()
 	CreateWICTextureFromFile(device, deviceContext, L"wood_spec.png", 0, &specSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"wood_diff.png", 0, &diffSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"wood_gloss.png", 0, &glossSRV);
-	DirectX::CreateDDSTextureFromFile(device, deviceContext, L"SunnyCubeMap.dds", 0, &skySRV);
+	DirectX::CreateDDSTextureFromFile(device, deviceContext, L"TestCubeMap.dds", 0, &skySRV);
+	//DirectX::CreateDDSTextureFromFile(device, deviceContext, L"SunnyCubeMap.dds", 0, &skySRV);
 
 	// Create the sampler state
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -241,27 +242,6 @@ void MyDemoGame::CreateGeometry()
 		entities[i]->setVec("scale", scale);
 		pos.x += 5;
 	}
-
-	
-	// Set up the vertices of the triangle we would like to draw
-	// - We're going to copy this array, exactly as it exists in memory
-	//    over to a DirectX-controlled data structure (the vertex buffer)
-	/*Vertex vertices[] = {
-		{ XMFLOAT3(+0.0f, +1.0f, +0.0f), red },
-		{ XMFLOAT3(+1.5f, -1.0f, +0.0f), blue },
-		{ XMFLOAT3(-1.5f, -1.0f, +0.0f), green },
-	};*/
-	/*Vertex vertices[] = {
-		{ XMFLOAT3(+0.0f, +1.0f, +0.0f), red },
-		{ XMFLOAT3(+1.5f, +1.0f, +0.0f), blue },
-		{ XMFLOAT3(+1.5f, -1.0f, +0.0f), green },
-		{ XMFLOAT3(+0.0f, -1.0f, +0.0f), blue },
-	};*/
-	// Set up the indices, which tell us which vertices to use and in which order
-	// - This is somewhat redundant for just 3 vertices (it's a simple example)
-	// - Indices are technically not required if the vertices are in the buffer 
-	//    in the correct order and each one will be used exactly once
-	// - But just to see how it's done...
 
 	unsigned int indices[] = { 0, 1, 2};
 
@@ -396,6 +376,7 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 	XMStoreFloat4x4(&tempRot, XMMatrixTranspose(tempRotMat));
 
 	entities[1]->setMat("rot", tempRot);
+	pixelShader->SetFloat3("CameraPosition", camera->getPos());
 }
 
 // --------------------------------------------------------
