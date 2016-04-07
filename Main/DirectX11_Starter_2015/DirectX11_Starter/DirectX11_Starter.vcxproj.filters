@@ -16,6 +16,21 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{e11479ef-8a44-4ba5-9d5a-c14237485115}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PostProcess">
+      <UniqueIdentifier>{a090664c-d70d-4c29-a149-f2cc54927421}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PostProcess">
+      <UniqueIdentifier>{181c1aff-0511-4845-b525-6f7345457517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PostProcessing">
+      <UniqueIdentifier>{6416e223-7a7e-4fc5-9bbc-312092c643c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PostProcessing\Blur">
+      <UniqueIdentifier>{5c31cdfe-77ac-425d-b707-1506470495ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\PostProcessing\Bloom">
+      <UniqueIdentifier>{d738cdef-20eb-405e-a15a-0bbeaef69171}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxerr.cpp">
@@ -44,6 +59,18 @@
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcess.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Blur.cpp">
+      <Filter>Source Files\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Bloom.cpp">
+      <Filter>Source Files\PostProcess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +107,21 @@
     <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PostProcess.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Blur.h">
+      <Filter>Header Files\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bloom.h">
+      <Filter>Header Files\PostProcess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
@@ -91,8 +133,31 @@
     <FxCompile Include="Shaders\PixelShader2.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="SimplePS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurPS.hlsl">
+      <Filter>Shaders\PostProcessing\Blur</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurVS.hlsl">
+      <Filter>Shaders\PostProcessing\Blur</Filter>
+    </FxCompile>
+    <FxCompile Include="BloomFilter.hlsl">
+      <Filter>Shaders\PostProcessing\Bloom</Filter>
+    </FxCompile>
+    <FxCompile Include="BloomComposite.hlsl">
+      <Filter>Shaders\PostProcessing\Bloom</Filter>
+    </FxCompile>
+    <FxCompile Include="Final.hlsl">
+      <Filter>Shaders\PostProcessing</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DirectX11_Starter.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

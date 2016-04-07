@@ -29,6 +29,7 @@ Texture2D specTexture	   : register(t1);
 Texture2D diffTexture	   : register(t2);
 Texture2D glossTexture	   : register(t3);
 TextureCube cubeMap		   : register(t4);
+Texture2D nrm2			   : register(t5);
 SamplerState trilinear     : register(s0);
 
 cbuffer lightBuffer : register(b0) {
@@ -66,10 +67,12 @@ float celShade(float input) {
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
+
 	float3 bitan = cross(input.tan,input.normal);
 	float3 tan = cross(input.biTan, input.normal);
 
-	float2 uvScale = input.uv * 2.0f;
+	//float2 uvScale = input.uv * 2.0f;
+	float2 uvScale = input.uv * 1;
 
 	float3 fwd = float3(input.view[0][2], input.view[1][2], input.view[2][2]);
 	//float3 eyeWorldPos = float3(input.view[0][3], input.view[1][3], input.view[2][3]);
@@ -81,7 +84,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	float4 glossTex = glossTexture.Sample(trilinear, uvScale);
 
-	float4 nrmTex = normalTexture.Sample(trilinear, uvScale);
+	float4 nrmTex = nrm2.Sample(trilinear, uvScale);
 	nrmTex = 2 * nrmTex - 1;
 	//nrmTex.y *= -1;
 
@@ -116,6 +119,8 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	float4 diffTex = diffTexture.Sample(trilinear, uvScale);
 
+
+
 	//return (SpecularFactor1 * 1 * specTex);
 
 	/*float lightAmount1 = getLightAmount(light1, nrm);
@@ -126,8 +131,8 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float4 ambColor = light1.AmbientColor + light2.AmbientColor;
 
 	//cel shading
-	/*lightAmount1 = celShade(lightAmount1);
-	lightAmount2 = celShade(lightAmount2);*/
+	//lightAmount1 = celShade(lightAmount1);
+	//lightAmount2 = celShade(lightAmount2);
 
 	float fresnelAmount = fresnel(fwd, nrm, 4.f,0.25f);
 
@@ -135,7 +140,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	//return inHColor * specColor*pow(specTex, 2);
 	//return fresnelAmount;
-	return ((light1.DiffuseColor*lightAmount1 + light2.DiffuseColor*lightAmount2) * diffTex)
+	return ((light1.DiffuseColor*lightAmount1) * diffTex)
 		+ ambColor
 		+ (fresnelAmount * reflectionColor)
 		+ (SpecularFactor1 * lerp(0.8f,1.2f,glossTex)* specTex * reflectionColor);
