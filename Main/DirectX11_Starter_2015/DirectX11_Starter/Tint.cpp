@@ -55,12 +55,12 @@ Tint::Tint(float width, float height, ID3D11Device* _device, ID3D11DeviceContext
 	ppTexture->Release();
 }
 
-ID3D11ShaderResourceView* Tint::draw(ID3D11ShaderResourceView* ppSRV, ID3D11DepthStencilView* depthStencilView) {
+ID3D11ShaderResourceView* Tint::draw(ID3D11ShaderResourceView* ppSRV){
 	const float color[4] = { 0.1f, 0.1f, 0.1f, 0.1f };
 
 	// Reset states
 
-	deviceContext->OMSetRenderTargets(1, &tintRTV, depthStencilView);
+	deviceContext->OMSetRenderTargets(1, &tintRTV, 0);
 	deviceContext->ClearRenderTargetView(tintRTV, color);
 
 	ppPS->SetShaderResourceView("pixels", ppSRV);
