@@ -139,6 +139,12 @@ bool MyDemoGame::Init()
 		"light1",
 		&lights[0],
 		sizeof(DirectionalLight));
+
+	simplePS->SetData(
+		"light1",
+		&lights[0],
+		sizeof(DirectionalLight));
+
 	pixelShader->SetData(
 		"light2",
 		&lights[1],
@@ -147,10 +153,14 @@ bool MyDemoGame::Init()
 	camera = new Camera();
 	camera->updateProjection(aspectRatio);
 
-	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_normal.png", 0, &normalSRV);
+	/*CreateWICTextureFromFile(device, deviceContext, L"Test/metal_normal.png", 0, &normalSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_specular.png", 0, &specSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_diffuse.png", 0, &diffSRV);
-	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_gloss.png", 0, &glossSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_gloss.png", 0, &glossSRV);*/
+	CreateWICTextureFromFile(device, deviceContext, L"wood_nrm.png", 0, &normalSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_spec.png", 0, &specSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_diff.png", 0, &diffSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_gloss.png", 0, &glossSRV);
 
 	// Create the sampler state
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -163,9 +173,10 @@ bool MyDemoGame::Init()
 
 	material = new Material(vertexShader, pixelShader, samplerState);
 	material2 = new Material(vertexShader, pixelShader2, samplerState);
+	simpleMaterial = new Material(vertexShader,simplePS,samplerState);
 
 	//sends the srvs to the material
-	material->setSRV("normalTexture", normalSRV);
+	material->setSRV("nrm2", normalSRV);
 	material->setSRV("specTexture", specSRV);
 	material->setSRV("diffTexture", diffSRV);
 	material->setSRV("glossTexture", glossSRV);
@@ -174,9 +185,20 @@ bool MyDemoGame::Init()
 	material2->setSRV("specTexture", specSRV);
 	material2->setup();
 
+	simpleMaterial->setSRV("diffTexture", diffSRV);
+	simpleMaterial->setup();
 
 	CreateGeometry();
 	CreateMatrices();
+
+	ppChain = new PostProcess(device, deviceContext,samplerState,depthStencilView);
+
+	blurEffect = new Blur(windowWidth/4, windowHeight/4, device, deviceContext, samplerState);
+	blurEffect2 = new Blur(windowWidth, windowHeight, device, deviceContext, samplerState);
+	bloomEffect = new Bloom(windowWidth, windowHeight, device, deviceContext, samplerState);
+	ppChain->AddEffect(blurEffect);
+	//ppChain->AddEffect(blurEffect2);
+	//ppChain->AddEffect(blurEffect);
 	return true;
 }
 
@@ -196,6 +218,43 @@ void MyDemoGame::LoadShaders()
 
 	pixelShader2 = new SimplePixelShader(device, deviceContext);
 	pixelShader2->LoadShaderFile(L"PixelShader2.cso");
+
+	simplePS = new SimplePixelShader(device, deviceContext);
+	simplePS->LoadShaderFile(L"simplePS.cso");
+
+	// Create a texture
+	D3D11_TEXTURE2D_DESC tDesc = {};
+	tDesc.Width = windowWidth;
+	tDesc.Height = windowHeight;
+	tDesc.ArraySize = 1;
+	tDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	tDesc.CPUAccessFlags = 0;
+	tDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	tDesc.MipLevels = 1;
+	tDesc.MiscFlags = 0;
+	tDesc.SampleDesc.Count = 1;
+	tDesc.SampleDesc.Quality = 0;
+	tDesc.Usage = D3D11_USAGE_DEFAULT;
+	ID3D11Texture2D* ppTexture;
+	device->CreateTexture2D(&tDesc, 0, &ppTexture);
+
+	// Make a render target view for rendering into the texture
+	D3D11_RENDER_TARGET_VIEW_DESC rtvDesc = {};
+	rtvDesc.Format = tDesc.Format;
+	rtvDesc.Texture2D.MipSlice = 0;
+	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	device->CreateRenderTargetView(ppTexture, &rtvDesc, &ppRTV);
+
+	// Make an SRV 
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = tDesc.Format;
+	srvDesc.Texture2D.MipLevels = 1;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	device->CreateShaderResourceView(ppTexture, &srvDesc, &ppSRV);
+
+	// Get rid of ONE of the texture references
+	ppTexture->Release();
 }
 
 
@@ -212,15 +271,25 @@ void MyDemoGame::CreateGeometry()
 
 	meshes = new Mesh*[numMeshes];
 	entities = new Entity*[numMeshes];
-	for (int i = 0; i < numMeshes; i++) {
-		meshes[i] = new Mesh(device, deviceContext);
-		if(i == 1)
-			entities[i] = new Entity(meshes[i], vertexShader, pixelShader2, material2);
-		else
-			entities[i] = new Entity(meshes[i],vertexShader,pixelShader, material2);
-	}
+	//for (int i = 0; i < numMeshes; i++) {
+	//	meshes[i] = new Mesh(device, deviceContext);
+	//	if(i == 1)
+	//		entities[i] = new Entity(meshes[i], vertexShader, pixelShader2, material2);
+	//	else
+	//		entities[i] = new Entity(meshes[i],vertexShader,pixelShader, material);
+	//}
 
-	entities[1]->setMaterial(material2);
+	meshes[0] = new Mesh(device, deviceContext);
+	entities[0] = new Entity(meshes[0], vertexShader, pixelShader, material);
+
+	meshes[1] = new Mesh(device, deviceContext);
+	entities[1] = new Entity(meshes[1], vertexShader, simplePS, simpleMaterial);
+
+	meshes[2] = new Mesh(device, deviceContext);
+	entities[2] = new Entity(meshes[2], vertexShader, simplePS, simpleMaterial);
+
+	/*entities[1]->setMaterial(material2);
+	entities[2]->setMaterial(simpleMaterial);*/
 
 	XMFLOAT3 pos = XMFLOAT3(-5.f, 0.f, 10.f);
 	XMFLOAT3 dir = XMFLOAT3(0.f, 0.f, 1.f);
@@ -397,14 +466,17 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 {
 	// Background color (Cornflower Blue in this case) for clearing
-	const float color[4] = {0.4f, 0.6f, 0.75f, 0.0f};
+	const float color[4] = {0.1f, 0.1f, 0.1f, 0.1f};
 
-	
+	// Swap to the new render target
+	//deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
+	deviceContext->OMSetRenderTargets(1, &ppRTV, depthStencilView);
 
 	// Clear the render target and depth buffer (erases what's on the screen)
 	//  - Do this ONCE PER FRAME
 	//  - At the beginning of DrawScene (before drawing *anything*)
-	deviceContext->ClearRenderTargetView(renderTargetView, color);
+	//deviceContext->ClearRenderTargetView(renderTargetView, color);
+	deviceContext->ClearRenderTargetView(ppRTV, color);
 	deviceContext->ClearDepthStencilView(
 		depthStencilView, 
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
@@ -416,7 +488,16 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 	for (int i = 0; i < numMeshes; i++) {
 		entities[i]->Draw(camera->getViewMatrix(),camera->getProjMatrix());
 	}
-	
+
+	//// Reset states
+	//deviceContext->RSSetState(0);
+	//deviceContext->OMSetDepthStencilState(0, 0);
+
+	//// Done with "regular" rendering - swap to post process
+	//deviceContext->OMSetRenderTargets(1, &renderTargetView, 0);
+	//deviceContext->ClearRenderTargetView(renderTargetView, color);
+
+	ppChain->draw(ppSRV,renderTargetView);
 
 	// Present the buffer
 	//  - Puts the image we're drawing into the window so the user can see it
