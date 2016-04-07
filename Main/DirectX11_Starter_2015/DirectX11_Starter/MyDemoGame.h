@@ -79,6 +79,7 @@ private:
 	Blur* blurEffect;
 	Blur* blurEffect2;
 	Bloom* bloomEffect;
+	Tint* tintEffect;
 
 	//texture 
 	ID3D11ShaderResourceView* skySRV;

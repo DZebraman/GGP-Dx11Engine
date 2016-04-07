@@ -63,15 +63,12 @@ ID3D11ShaderResourceView* Blur::draw(ID3D11ShaderResourceView* ppSRV, ID3D11Dept
 
 	const float color[4] = { 0.1f, 0.1f, 0.1f, 0.1f };
 
-	deviceContext->OMSetRenderTargets(1, &blurRTV, depthStencilView);
+	// Reset states
+	deviceContext->RSSetState(0);
+	deviceContext->OMSetDepthStencilState(0, 0);
 
+	deviceContext->OMSetRenderTargets(1, &blurRTV, depthStencilView);
 	deviceContext->ClearRenderTargetView(blurRTV, color);
-	deviceContext->ClearDepthStencilView(
-		depthStencilView,
-		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
-		1.0f,
-		0);
-	//ppVS->SetShader();
 
 
 	ppPS->SetInt("blurAmount", 5);
@@ -84,5 +81,5 @@ ID3D11ShaderResourceView* Blur::draw(ID3D11ShaderResourceView* ppSRV, ID3D11Dept
 	deviceContext->Draw(3, 0);
 	ppPS->SetShaderResourceView("pixels", 0);
 
-	return ppSRV;
+	return blurSRV;
 }

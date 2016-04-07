@@ -31,6 +31,9 @@
     <Filter Include="Shaders\PostProcessing\Bloom">
       <UniqueIdentifier>{d738cdef-20eb-405e-a15a-0bbeaef69171}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\PostProcessing\Tint">
+      <UniqueIdentifier>{04c334a9-7235-457f-a57f-7d89f3c22f20}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxerr.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="Bloom.cpp">
       <Filter>Source Files\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="Tint.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +128,9 @@
     <ClInclude Include="Bloom.h">
       <Filter>Header Files\PostProcess</Filter>
     </ClInclude>
+    <ClInclude Include="Tint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
@@ -150,6 +159,9 @@
     </FxCompile>
     <FxCompile Include="Final.hlsl">
       <Filter>Shaders\PostProcessing</Filter>
+    </FxCompile>
+    <FxCompile Include="Tint.hlsl">
+      <Filter>Shaders\PostProcessing\Tint</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

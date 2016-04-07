@@ -198,10 +198,12 @@ bool MyDemoGame::Init()
 
 	ppChain = new PostProcess(device, deviceContext,samplerState,depthStencilView);
 
-	blurEffect = new Blur(windowWidth/4, windowHeight/4, device, deviceContext, samplerState,ppRTV);
+	blurEffect = new Blur(windowWidth, windowHeight, device, deviceContext, samplerState,ppRTV);
 	//blurEffect2 = new Blur(windowWidth, windowHeight, device, deviceContext, samplerState);
 	bloomEffect = new Bloom(windowWidth, windowHeight, device, deviceContext, samplerState);
+	tintEffect = new Tint(windowWidth, windowHeight, device, deviceContext, samplerState, ppRTV);
 	ppChain->AddEffect(blurEffect);
+	ppChain->AddEffect(tintEffect);
 	//ppChain->AddEffect(blurEffect2);
 	//ppChain->AddEffect(blurEffect);
 	return true;

@@ -3,6 +3,7 @@
 #include "PostProcessBase.h"
 #include "Blur.h"
 #include "Bloom.h"
+#include "Tint.h"
 #include "Vertex.h"
 class PostProcess
 {
