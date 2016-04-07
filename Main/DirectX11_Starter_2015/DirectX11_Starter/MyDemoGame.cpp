@@ -203,9 +203,9 @@ bool MyDemoGame::Init()
 	bloomEffect = new Bloom(windowWidth, windowHeight, device, deviceContext, samplerState);
 	tintEffect = new Tint(windowWidth, windowHeight, device, deviceContext, samplerState, ppRTV);
 	ppChain->AddEffect(blurEffect);
-	ppChain->AddEffect(tintEffect);
+	//ppChain->AddEffect(tintEffect);
 	//ppChain->AddEffect(blurEffect2);
-	//ppChain->AddEffect(blurEffect);
+	ppChain->AddEffect(tintEffect);
 	return true;
 }
 

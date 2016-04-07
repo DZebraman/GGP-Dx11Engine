@@ -41,7 +41,7 @@ Tint::Tint(float width, float height, ID3D11Device* _device, ID3D11DeviceContext
 	rtvDesc.Format = tDesc.Format;
 	rtvDesc.Texture2D.MipSlice = 0;
 	rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	device->CreateRenderTargetView(ppTexture, &rtvDesc, &blurRTV);
+	device->CreateRenderTargetView(ppTexture, &rtvDesc, &tintRTV);
 
 	//Make an SRV 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
@@ -49,7 +49,7 @@ Tint::Tint(float width, float height, ID3D11Device* _device, ID3D11DeviceContext
 	srvDesc.Texture2D.MipLevels = 1;
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	device->CreateShaderResourceView(ppTexture, &srvDesc, &blurSRV);
+	device->CreateShaderResourceView(ppTexture, &srvDesc, &tintSRV);
 
 	//Get rid of ONE of the texture references
 	ppTexture->Release();
@@ -59,21 +59,17 @@ ID3D11ShaderResourceView* Tint::draw(ID3D11ShaderResourceView* ppSRV, ID3D11Dept
 	const float color[4] = { 0.1f, 0.1f, 0.1f, 0.1f };
 
 	// Reset states
-	deviceContext->RSSetState(0);
-	deviceContext->OMSetDepthStencilState(0, 0);
 
-	deviceContext->OMSetRenderTargets(1, &blurRTV, depthStencilView);
-	deviceContext->ClearRenderTargetView(blurRTV, color);
+	deviceContext->OMSetRenderTargets(1, &tintRTV, depthStencilView);
+	deviceContext->ClearRenderTargetView(tintRTV, color);
 
-	ppPS->SetFloat("pixelWidth", 1.0f / windowWidth);
-	ppPS->SetFloat("pixelHeight", 1.0f / windowHeight);
 	ppPS->SetShaderResourceView("pixels", ppSRV);
-	ppPS->SetSamplerState("trilinear", sampler);
 	ppPS->SetShader();
 
 	deviceContext->Draw(3, 0);
+	ppPS->SetShaderResourceView("pixels", 0);
 
-	return blurSRV;
+	return tintSRV;
 }
 
 Tint::~Tint()

@@ -12,8 +12,8 @@ private:
 	float windowWidth, windowHeight;
 
 	// Post process stuff
-	ID3D11RenderTargetView* blurRTV;
-	ID3D11ShaderResourceView* blurSRV;
+	ID3D11RenderTargetView* tintRTV;
+	ID3D11ShaderResourceView* tintSRV;
 	SimpleVertexShader* ppVS;
 	SimplePixelShader* ppPS;
 

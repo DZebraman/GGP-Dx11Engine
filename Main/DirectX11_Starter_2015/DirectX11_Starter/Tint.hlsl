@@ -21,5 +21,6 @@ SamplerState trilinear	: register(s0);
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
+	return float4(1,0,0,1);
 	return pixels.Sample(trilinear,input.uv) + float4(0.2,0,0,1);
 }

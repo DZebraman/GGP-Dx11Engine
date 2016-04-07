@@ -37,20 +37,21 @@ void PostProcess::draw(ID3D11ShaderResourceView* ppSRV, ID3D11RenderTargetView* 
 
 	ppVS->SetShader();
 
-	for (int i = 0; i < ppChain.size(); ++i) {
-		srv = ppChain[0]->draw(srv,depthStencilView);
-	}
+	//for (int i = 0; i < ppChain.size(); ++i) {
+		srv = ppChain[0]->draw(srv, depthStencilView);
+		//srv = ppChain[1]->draw(srv, depthStencilView);
+	//}
 
 	// Reset states
 	deviceContext->RSSetState(0);
 	deviceContext->OMSetDepthStencilState(0, 0);
 
-	// Done with "regular" rendering - swap to post process
+	// Done with set to final render state
 	deviceContext->OMSetRenderTargets(1, &renderTargetView, 0);
 	deviceContext->ClearRenderTargetView(renderTargetView, color);
 
 
-	ppPS->SetShaderResourceView("pixels", ppSRV);
+	ppPS->SetShaderResourceView("pixels", srv);
 	ppPS->SetShader();
 
 	// Finally - DRAW!
