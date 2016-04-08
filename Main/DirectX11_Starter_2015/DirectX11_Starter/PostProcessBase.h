@@ -2,6 +2,7 @@
 #include "DirectXGameCore.h"
 
 typedef ID3D11ShaderResourceView SRV;
+typedef ID3D11RenderTargetView RTV;
 
 class PostProcessBase
 {

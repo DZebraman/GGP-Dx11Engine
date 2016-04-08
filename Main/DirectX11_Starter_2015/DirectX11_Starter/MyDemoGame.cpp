@@ -204,8 +204,10 @@ bool MyDemoGame::Init()
 	tintEffect = new Tint(windowWidth, windowHeight, device, deviceContext, samplerState, ppRTV);
 	testEffect = new ppTest(windowWidth, windowHeight, device, deviceContext, samplerState, ppRTV);
 	screenDepth = new ScreenDepth(windowWidth, windowHeight, device, deviceContext, samplerState, camera, entities, numMeshes);
+	edgeDetect = new EdgeDetect(windowWidth, windowHeight, device, deviceContext);
 	//ppChain->AddEffect(screenDepth);
-	ppChain->AddEffect(bloomEffect);
+	//ppChain->AddEffect(bloomEffect);
+	ppChain->AddEffect(edgeDetect);
 	//ppChain->AddEffect(blurEffect);
 	//ppChain->AddEffect(tintEffect);
 	//ppChain->AddEffect(testEffect);

@@ -1,58 +1,7 @@
-﻿  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\BloomComposite.cso
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\BloomFilter.cso
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\BlurPS.cso
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\FinalVS.cso
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\Final.cso
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\SceneDepthPS.cso
-Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\DirectX11_Starter\SceneDepthVS.hlsl(11,18-41): warning X3578: Output value 'main' is not completely initialized
-  
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\SceneDepthVS.cso
-Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(79,9-35): warning X3206: implicit truncation of vector type
-Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(93,15-30): warning X3206: 'mul': implicit truncation of vector type
-Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\DirectX11_Starter\Shaders\PixelShader.hlsl(114,21-64): warning X3571: pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
-  
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\PixelShader.cso
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\PixelShader2.cso
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\VertexShader.cso
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\SimplePS.cso
-  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\Tint.cso
-  Bloom.cpp
-  Blur.cpp
-  Camera.cpp
-  Entitiy.cpp
-  Material.cpp
-  Mesh.cpp
-  MeshLoader.cpp
-MeshLoader.cpp(300): warning C4018: '<': signed/unsigned mismatch
-MeshLoader.cpp(304): warning C4018: '<': signed/unsigned mismatch
-MeshLoader.cpp(320): warning C4018: '<': signed/unsigned mismatch
-MeshLoader.cpp(348): warning C4018: '<': signed/unsigned mismatch
-MeshLoader.cpp(351): warning C4018: '<': signed/unsigned mismatch
-  MyDemoGame.cpp
-MyDemoGame.cpp(137): warning C4305: 'argument': truncation from 'double' to 'float'
-MyDemoGame.cpp(201): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-MyDemoGame.cpp(202): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-MyDemoGame.cpp(203): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-MyDemoGame.cpp(204): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-MyDemoGame.cpp(205): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-MyDemoGame.cpp(206): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  dxerr.cpp
-  DirectXGameCore.cpp
-  PostProcess.cpp
-PostProcess.cpp(40): warning C4018: '<': signed/unsigned mismatch
-  PostProcessBase.cpp
-PostProcessBase.cpp(21): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-PostProcessBase.cpp(22): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-  ppTest.cpp
-ppTest.cpp(28): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-ppTest.cpp(29): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-ppTest.cpp(62): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-ppTest.cpp(63): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-  ScreenDepth.cpp
-  SimpleShader.cpp
-  Tint.cpp
+﻿  compilation object save succeeded; see Q:\Classes\3-2\GGP-2\Main\DirectX11_Starter_2015\Release\EdgePS.cso
+  EdgeDetect.cpp
   Generating code
-  2869 of 2877 functions (99.7%) were compiled, the rest were copied from previous compilation.
+  1 of 2880 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

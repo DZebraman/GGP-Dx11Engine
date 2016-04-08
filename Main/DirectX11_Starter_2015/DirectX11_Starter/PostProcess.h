@@ -7,6 +7,7 @@
 #include "Vertex.h"
 #include "ppTest.h"
 #include "ScreenDepth.h"
+#include "EdgeDetect.h"
 class PostProcess
 {
 public:

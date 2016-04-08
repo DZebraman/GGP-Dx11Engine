@@ -70,6 +70,7 @@
     <ClCompile Include="Bloom.cpp" />
     <ClCompile Include="Blur.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="EdgeDetect.cpp" />
     <ClCompile Include="Entitiy.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="Bloom.h" />
     <ClInclude Include="Blur.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="EdgeDetect.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
@@ -123,6 +125,13 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="EdgePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EnableDebuggingInformation>
     </FxCompile>
     <FxCompile Include="FinalVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>

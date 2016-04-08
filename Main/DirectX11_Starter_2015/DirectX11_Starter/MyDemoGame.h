@@ -82,6 +82,7 @@ private:
 	Tint* tintEffect;
 	ppTest* testEffect;
 	ScreenDepth* screenDepth;
+	EdgeDetect* edgeDetect;
 
 	//texture 
 	ID3D11ShaderResourceView* skySRV;
