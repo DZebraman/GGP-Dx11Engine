@@ -163,8 +163,8 @@ bool MyDemoGame::Init()
 	CreateWICTextureFromFile(device, deviceContext, L"wood_diff.png", 0, &diffSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"wood_gloss.png", 0, &glossSRV);
 
-	DirectX::CreateDDSTextureFromFile(device, deviceContext, L"TestCubeMap.dds", 0, &skySRV);
-	//DirectX::CreateDDSTextureFromFile(device, deviceContext, L"SunnyCubeMap.dds", 0, &skySRV);
+	//DirectX::CreateDDSTextureFromFile(device, deviceContext, L"TestCubeMap.dds", 0, &skySRV);
+	DirectX::CreateDDSTextureFromFile(device, deviceContext, L"SunnyCubeMap.dds", 0, &skySRV);
 
 	// Create the sampler state
 	D3D11_SAMPLER_DESC samplerDesc = {};
@@ -206,8 +206,8 @@ bool MyDemoGame::Init()
 	screenDepth = new ScreenDepth(windowWidth, windowHeight, device, deviceContext, samplerState, camera, entities, numMeshes);
 	edgeDetect = new EdgeDetect(windowWidth, windowHeight, device, deviceContext);
 	//ppChain->AddEffect(screenDepth);
-	//ppChain->AddEffect(bloomEffect);
 	ppChain->AddEffect(edgeDetect);
+	ppChain->AddEffect(bloomEffect);
 	//ppChain->AddEffect(blurEffect);
 	//ppChain->AddEffect(tintEffect);
 	//ppChain->AddEffect(testEffect);

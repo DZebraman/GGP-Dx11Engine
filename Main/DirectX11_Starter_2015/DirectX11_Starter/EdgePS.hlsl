@@ -20,20 +20,22 @@ SamplerState trilinear	: register(s0);
 float Threshold(float val) {
 	if (val < thresholdMin)
 		return 0;
-	if (val > thresholdMax)
-		return 1;
-	return val;
+	return 1;
 }
 
 float pixelIntensity(float4 inColor) {
 	//simple average of rgb, may change later
-	return (inColor.x + inColor.y + inColor.z) / 3;
+	return pow((inColor.x + inColor.y + inColor.z) / 3, 1)*1;
 }
 
 float edgeDetect(float2 uv) {
 	//how far in the uv is one pixel?
-	float dx = 1 / pixelWidth;
-	float dy = 1 / pixelHeight;
+	if (pixelIntensity(pixels.Sample(trilinear, uv)) < 0.1f) {
+		return 0.f;
+	}
+
+	float dx = 1/pixelWidth;
+	float dy = 1/pixelHeight;
 
 	float pixel[9];
 	int k = -1;
@@ -43,7 +45,9 @@ float edgeDetect(float2 uv) {
 	for (int i = -1; i < 2; i++) {
 		for (int j = -1; j < 2; j++) {
 			k++;
-			float2 tempUV = float2(float(i) * dx, float(j)*dy);
+			float2 tempUV = uv + float2(float(i) * dx * 3, float(j) * dy * 3);
+			tempUV.x = saturate(tempUV.x);
+			tempUV.y = saturate(tempUV.y);
 			pixel[k] = pixelIntensity(pixels.Sample(trilinear, tempUV));
 		}
 	}
@@ -55,6 +59,8 @@ float edgeDetect(float2 uv) {
 		abs(pixel[2] - pixel[6])
 		) / 4;
 
+	//delta = 0.5f;
+
 	return Threshold(saturate(1.8*delta));
 }
 
@@ -63,7 +69,10 @@ float edgeDetect(float2 uv) {
 float4 main(VertexToPixel input) : SV_TARGET
 {
 	float4 color = float4(0,0,0,1);
-	color.y = edgeDetect(input.uv);
+	//color.y = pixelIntensity(pixels.Sample(trilinear, input.uv));
+	//return float4(color.yyy,1);
+	color.z = edgeDetect(input.uv);
+	color.y = color.z;
 	return color;
 	return pixels.Sample(trilinear, input.uv);
 }

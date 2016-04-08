@@ -11,6 +11,11 @@ private:
 	// Post process stuff
 	RTV* edgeRTV;
 	SRV* edgeSRV;
+
+	RTV* blurRTV;
+	SRV* blurSRV;
+
 	SimplePixelShader* edgePS;
+	SimplePixelShader* blurPS;
 };
 

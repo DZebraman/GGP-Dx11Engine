@@ -104,7 +104,7 @@ ID3D11ShaderResourceView* Bloom::draw(ID3D11ShaderResourceView* ppSRV){
 	deviceContext->OMSetRenderTargets(1, &filterRTV, 0);
 	deviceContext->ClearRenderTargetView(filterRTV, color);
 
-	filterPS->SetFloat("minBrightness", 0.6f);
+	filterPS->SetFloat("minBrightness", 0.1f);
 	filterPS->SetShaderResourceView("pixels", ppSRV);
 	filterPS->SetSamplerState("trilinear", sampler);
 	filterPS->SetShader();
@@ -117,7 +117,7 @@ ID3D11ShaderResourceView* Bloom::draw(ID3D11ShaderResourceView* ppSRV){
 
 	//return testSRV;
 
-	compositePS->SetInt("blurAmount", 2);
+	compositePS->SetInt("blurAmount", 20);
 	compositePS->SetFloat("pixelWidth", 1.0f / windowWidth);
 	compositePS->SetFloat("pixelHeight", 1.0f / windowHeight);
 	compositePS->SetShaderResourceView("test", filterSRV);
