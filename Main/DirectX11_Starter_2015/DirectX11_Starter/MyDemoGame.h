@@ -7,6 +7,8 @@
 #include "Entity.h"
 #include "Camera.h"
 #include "Light.h"
+#include "PostProcess.h"
+
 // Include run-time memory checking in debug builds, so 
 // we can be notified of memory leaks
 #if defined(DEBUG) || defined(_DEBUG)
@@ -52,6 +54,7 @@ private:
 	Camera* camera;
 	Material* material;
 	Material* material2;
+	Material* simpleMaterial;
 
 	// Buffers to hold actual geometry data
 	ID3D11Buffer* vertexBuffer;
@@ -61,11 +64,24 @@ private:
 	SimpleVertexShader* vertexShader;
 	SimplePixelShader* pixelShader;
 	SimplePixelShader* pixelShader2;
+	SimplePixelShader* simplePS;
 
 	// The matrices to go from model space to screen space
 	DirectX::XMFLOAT4X4 worldMatrix;
 	DirectX::XMFLOAT4X4 viewMatrix;
 	DirectX::XMFLOAT4X4 projectionMatrix;
+
+	//PostProcess
+	ID3D11RenderTargetView* ppRTV;
+	ID3D11ShaderResourceView* ppSRV;
+	PostProcess* ppChain;
+
+	Blur* blurEffect;
+	Blur* blurEffect2;
+	Bloom* bloomEffect;
+	Tint* tintEffect;
+	ppTest* testEffect;
+	ScreenDepth* screenDepth;
 
 	//texture 
 	ID3D11ShaderResourceView* skySRV;
