@@ -1,26 +1,14 @@
-﻿  Blur.cpp
-Blur.cpp(25): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-Blur.cpp(26): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-  PostProcess.cpp
-PostProcess.cpp(40): warning C4018: '<': signed/unsigned mismatch
-  Tint.cpp
-Tint.cpp(25): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
-Tint.cpp(26): warning C4244: '=': conversion from 'float' to 'UINT', possible loss of data
+﻿  MyDemoGame.cpp
+MyDemoGame.cpp(137): warning C4305: 'argument': truncation from 'double' to 'float'
+MyDemoGame.cpp(201): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+MyDemoGame.cpp(202): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+MyDemoGame.cpp(203): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+MyDemoGame.cpp(204): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+MyDemoGame.cpp(205): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+MyDemoGame.cpp(206): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating code
-  2 of 2869 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 2877 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-Camera.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Camera.obj' or at 'D:\Users\jrp3024\GGP-2\Main\DirectX11_Starter_2015\Release\vc140.pdb'; linking object as if no debug info
-Entitiy.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Entitiy.obj' or at 'D:\Users\jrp3024\GGP-2\Main\DirectX11_Starter_2015\Release\vc140.pdb'; linking object as if no debug info
-Material.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Material.obj' or at 'D:\Users\jrp3024\GGP-2\Main\DirectX11_Starter_2015\Release\vc140.pdb'; linking object as if no debug info
-Mesh.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Mesh.obj' or at 'D:\Users\jrp3024\GGP-2\Main\DirectX11_Starter_2015\Release\vc140.pdb'; linking object as if no debug info
-MeshLoader.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'MeshLoader.obj' or at 'D:\Users\jrp3024\GGP-2\Main\DirectX11_Starter_2015\Release\vc140.pdb'; linking object as if no debug info
-MyDemoGame.obj : warning LNK4020: a type record in 'd:\users\jrp3024\ggp-2\main\directx11_starter_2015\directx11_starter\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
-dxerr.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'dxerr.obj' or at 'D:\Users\jrp3024\GGP-2\Main\DirectX11_Starter_2015\Release\vc140.pdb'; linking object as if no debug info
-DirectXGameCore.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'DirectXGameCore.obj' or at 'D:\Users\jrp3024\GGP-2\Main\DirectX11_Starter_2015\Release\vc140.pdb'; linking object as if no debug info
-PostProcess.obj : warning LNK4020: a type record in 'd:\users\jrp3024\ggp-2\main\directx11_starter_2015\directx11_starter\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
-PostProcessBase.obj : warning LNK4020: a type record in 'd:\users\jrp3024\ggp-2\main\directx11_starter_2015\directx11_starter\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
-SimpleShader.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'SimpleShader.obj' or at 'D:\Users\jrp3024\GGP-2\Main\DirectX11_Starter_2015\Release\vc140.pdb'; linking object as if no debug info
-Tint.obj : warning LNK4020: a type record in 'd:\users\jrp3024\ggp-2\main\directx11_starter_2015\directx11_starter\release\vc140.pdb' is corrupted; some symbols and types may not be accessible from the debugger
-  DirectX11_Starter.vcxproj -> D:\Users\jrp3024\GGP-2\Main\DirectX11_Starter_2015\Release\DirectX11_Starter.exe
+  DirectX11_Starter.vcxproj -> Q:\Classes\3-2\GGP\Engine\Main\DirectX11_Starter_2015\Release\DirectX11_Starter.exe

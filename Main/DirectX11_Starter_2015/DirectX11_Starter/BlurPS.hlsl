@@ -18,6 +18,7 @@ struct VertexToPixel
 // Textures and such
 Texture2D pixels		: register(t0);
 SamplerState trilinear	: register(s0);
+float3 camPos			: register(c0);
 
 
 // Entry point for this pixel shader

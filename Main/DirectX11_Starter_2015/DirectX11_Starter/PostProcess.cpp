@@ -9,7 +9,7 @@ PostProcess::PostProcess(ID3D11Device* _device, ID3D11DeviceContext* _deviceCont
 	deviceContext = _deviceContext;
 	depthStencilView = _depthStencilView;
 	ppVS = new SimpleVertexShader(device, deviceContext);
-	ppVS->LoadShaderFile(L"BlurVS.cso");
+	ppVS->LoadShaderFile(L"FinalVS.cso");
 	ppPS = new SimplePixelShader(device, deviceContext);
 	ppPS->LoadShaderFile(L"Final.cso");
 }
@@ -23,7 +23,7 @@ void PostProcess::AddEffect(PostProcessBase* effect) { ppChain.push_back(effect)
 
 void PostProcess::draw(ID3D11ShaderResourceView* ppSRV, ID3D11RenderTargetView* renderTargetView) {
 
-	ID3D11ShaderResourceView* srv = ppSRV;
+	SRV* srv = ppSRV;
 
 	const float color[4] = { 0.1f, 0.1f, 0.1f, 0.1f };
 	//D3D11_SAMPLER_DESC samplerDesc = {};
@@ -39,8 +39,9 @@ void PostProcess::draw(ID3D11ShaderResourceView* ppSRV, ID3D11RenderTargetView* 
 
 	for (int i = 0; i < ppChain.size(); ++i) {
 		srv = ppChain[i]->draw(srv);
-		//srv = ppChain[1]->draw(srv);
 	}
+
+	//srv = ppChain[0]->draw(srv);
 
 	// Reset states
 	deviceContext->RSSetState(0);
@@ -50,6 +51,7 @@ void PostProcess::draw(ID3D11ShaderResourceView* ppSRV, ID3D11RenderTargetView* 
 	deviceContext->OMSetRenderTargets(1, &renderTargetView, 0);
 	deviceContext->ClearRenderTargetView(renderTargetView, color);
 
+	ppVS->SetShader();
 
 	ppPS->SetShaderResourceView("pixels", srv);
 	ppPS->SetShader();

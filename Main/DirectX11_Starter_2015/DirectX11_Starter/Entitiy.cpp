@@ -50,12 +50,51 @@ void Entity::Draw(XMFLOAT4X4 * viewMat, XMFLOAT4X4 * projMat) {
 
 	PrepareMaterial(viewMat, projMat);
 
+	mesh->Draw();
+}
+
+void Entity::DrawNoMaterial(XMFLOAT4X4 * viewMat, XMFLOAT4X4 * projMat) {
+
+	XMFLOAT3 vPos, vFwd, vUp, vScale;
+	XMFLOAT4X4 mWorld, mPos, mRot, mScale;
+
+	vPos = vecLookUp["pos"]; vFwd = vecLookUp["fwd"];
+	vUp = vecLookUp["up"]; vScale = vecLookUp["scale"];
+
+	mPos = matLookUp["pos"]; mWorld = matLookUp["world"];
+	mRot = matLookUp["rot"]; mScale = matLookUp["scale"];
+
+	XMVECTOR xvPos = XMLoadFloat3(&vecLookUp["pos"]);
+	XMVECTOR xvFwd = XMLoadFloat3(&vFwd);
+	XMVECTOR xvUp = XMLoadFloat3(&vUp);
+	XMVECTOR xvScale = XMLoadFloat3(&vecLookUp["scale"]);
+	//XMVECTOR xvRight = XMVector3Cross(xvFwd, xvUp);
+
+	XMMATRIX xmWorld = XMMatrixIdentity();
+
+	XMMATRIX xmRot = XMLoadFloat4x4(&matLookUp["rot"]);
+	XMStoreFloat4x4(&matLookUp["rot"], XMMatrixTranspose(xmRot));
+
+	XMMATRIX xmPos = XMMatrixTranslation(vPos.x, vPos.y, vPos.z);
+	XMStoreFloat4x4(&matLookUp["pos"], XMMatrixTranspose(xmPos));
+
+	XMMATRIX xmScale = XMMatrixScalingFromVector(xvScale);
+	XMStoreFloat4x4(&matLookUp["scale"], XMMatrixTranspose(xmScale));
+
+	//xmWorld = XMMatrixMultiply(xmPos, XMMatrixMultiply(xmRot, xmScale));
+	xmWorld = xmRot * xmPos;
+	XMStoreFloat4x4(&matLookUp["world"], XMMatrixTranspose(xmWorld));
+
+	vertexShader->SetMatrix4x4("view", *viewMat);
+	vertexShader->SetMatrix4x4("projection", *projMat);
+	vertexShader->SetMatrix4x4("world", matLookUp["world"]);
+
+	vertexShader->SetShader(true);
 
 	mesh->Draw();
 }
 
 void Entity::PrepareMaterial(XMFLOAT4X4 * viewMat, XMFLOAT4X4 * projMat) {
-
 	vertexShader->SetMatrix4x4("view", *viewMat);
 	vertexShader->SetMatrix4x4("projection", *projMat);
 	vertexShader->SetMatrix4x4("world", matLookUp["world"]);

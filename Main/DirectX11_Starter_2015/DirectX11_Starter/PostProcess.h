@@ -5,6 +5,8 @@
 #include "Bloom.h"
 #include "Tint.h"
 #include "Vertex.h"
+#include "ppTest.h"
+#include "ScreenDepth.h"
 class PostProcess
 {
 public:

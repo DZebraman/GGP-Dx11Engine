@@ -10,16 +10,10 @@ public:
 	virtual ID3D11ShaderResourceView* draw(ID3D11ShaderResourceView* ppSRV);
 	~Blur();
 private:
-	float windowWidth, windowHeight;
-
 	// Post process stuff
 	ID3D11RenderTargetView* blurRTV;
 	ID3D11ShaderResourceView* blurSRV;
 	SimpleVertexShader* ppVS;
 	SimplePixelShader* ppPS;
-
-	ID3D11Device* device;
-	ID3D11DeviceContext * deviceContext;
-	ID3D11SamplerState* sampler;
 };
 

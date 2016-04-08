@@ -80,6 +80,8 @@ private:
 	Blur* blurEffect2;
 	Bloom* bloomEffect;
 	Tint* tintEffect;
+	ppTest* testEffect;
+	ScreenDepth* screenDepth;
 
 	//texture 
 	ID3D11ShaderResourceView* skySRV;

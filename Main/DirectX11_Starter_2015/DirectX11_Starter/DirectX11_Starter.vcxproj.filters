@@ -34,6 +34,9 @@
     <Filter Include="Shaders\PostProcessing\Tint">
       <UniqueIdentifier>{04c334a9-7235-457f-a57f-7d89f3c22f20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\PostProcessing\Depth">
+      <UniqueIdentifier>{59232efe-b018-4fcd-b6c7-6aee0203b003}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxerr.cpp">
@@ -76,6 +79,12 @@
       <Filter>Source Files\PostProcess</Filter>
     </ClCompile>
     <ClCompile Include="Tint.cpp">
+      <Filter>Source Files\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="ppTest.cpp">
+      <Filter>Source Files\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenDepth.cpp">
       <Filter>Source Files\PostProcess</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,6 +140,12 @@
     <ClInclude Include="Tint.h">
       <Filter>Header Files\PostProcess</Filter>
     </ClInclude>
+    <ClInclude Include="ppTest.h">
+      <Filter>Header Files\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenDepth.h">
+      <Filter>Header Files\PostProcess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
@@ -148,9 +163,6 @@
     <FxCompile Include="BlurPS.hlsl">
       <Filter>Shaders\PostProcessing\Blur</Filter>
     </FxCompile>
-    <FxCompile Include="BlurVS.hlsl">
-      <Filter>Shaders\PostProcessing\Blur</Filter>
-    </FxCompile>
     <FxCompile Include="BloomFilter.hlsl">
       <Filter>Shaders\PostProcessing\Bloom</Filter>
     </FxCompile>
@@ -162,6 +174,15 @@
     </FxCompile>
     <FxCompile Include="Tint.hlsl">
       <Filter>Shaders\PostProcessing\Tint</Filter>
+    </FxCompile>
+    <FxCompile Include="SceneDepthPS.hlsl">
+      <Filter>Shaders\PostProcessing\Depth</Filter>
+    </FxCompile>
+    <FxCompile Include="SceneDepthVS.hlsl">
+      <Filter>Shaders\PostProcessing\Depth</Filter>
+    </FxCompile>
+    <FxCompile Include="FinalVS.hlsl">
+      <Filter>Shaders\PostProcessing</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
