@@ -31,7 +31,7 @@ SRV* EdgeDetect::draw(SRV* ppSRV) {
 	deviceContext->OMSetRenderTargets(1, &edgeRTV, 0);
 	deviceContext->ClearRenderTargetView(edgeRTV, color);
 
-	blurPS->SetInt("blurAmount", 10);
+	blurPS->SetInt("blurAmount", 2);
 	blurPS->SetFloat("pixelWidth", 1.0f / windowWidth);
 	blurPS->SetFloat("pixelHeight", 1.0f / windowHeight);
 	blurPS->SetShaderResourceView("pixels", ppSRV);

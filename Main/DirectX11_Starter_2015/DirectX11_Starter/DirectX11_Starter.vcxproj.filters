@@ -40,6 +40,9 @@
     <Filter Include="Shaders\PostProcessing\EdgeDetect">
       <UniqueIdentifier>{6ca9a0a1-02e9-43e7-94d6-8d94d73fe966}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\PostProcessing\FXAA">
+      <UniqueIdentifier>{3acaaa97-8b57-4e7e-a7d1-07c338f18c17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxerr.cpp">
@@ -91,6 +94,9 @@
       <Filter>Source Files\PostProcess</Filter>
     </ClCompile>
     <ClCompile Include="EdgeDetect.cpp">
+      <Filter>Source Files\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="FXAA.cpp">
       <Filter>Source Files\PostProcess</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,6 +161,9 @@
     <ClInclude Include="EdgeDetect.h">
       <Filter>Header Files\PostProcess</Filter>
     </ClInclude>
+    <ClInclude Include="FXAA.h">
+      <Filter>Header Files\PostProcess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
@@ -195,6 +204,9 @@
     </FxCompile>
     <FxCompile Include="EdgePS.hlsl">
       <Filter>Shaders\PostProcessing\EdgeDetect</Filter>
+    </FxCompile>
+    <FxCompile Include="FXAA.hlsl">
+      <Filter>Shaders\PostProcessing\FXAA</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

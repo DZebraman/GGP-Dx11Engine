@@ -154,14 +154,14 @@ bool MyDemoGame::Init()
 	camera = new Camera();
 	camera->updateProjection(aspectRatio);
 
-	/*CreateWICTextureFromFile(device, deviceContext, L"Test/metal_normal.png", 0, &normalSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_normal.png", 0, &normalSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_specular.png", 0, &specSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_diffuse.png", 0, &diffSRV);
-	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_gloss.png", 0, &glossSRV);*/
-	CreateWICTextureFromFile(device, deviceContext, L"wood_nrm.png", 0, &normalSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"Test/metal_gloss.png", 0, &glossSRV);
+	/*CreateWICTextureFromFile(device, deviceContext, L"wood_nrm.png", 0, &normalSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"wood_spec.png", 0, &specSRV);
 	CreateWICTextureFromFile(device, deviceContext, L"wood_diff.png", 0, &diffSRV);
-	CreateWICTextureFromFile(device, deviceContext, L"wood_gloss.png", 0, &glossSRV);
+	CreateWICTextureFromFile(device, deviceContext, L"wood_gloss.png", 0, &glossSRV);*/
 
 	//DirectX::CreateDDSTextureFromFile(device, deviceContext, L"TestCubeMap.dds", 0, &skySRV);
 	DirectX::CreateDDSTextureFromFile(device, deviceContext, L"SunnyCubeMap.dds", 0, &skySRV);
