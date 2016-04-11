@@ -11,6 +11,7 @@ cbuffer Data : register(c0) {
 	float thresholdMax;
 	float pixelWidth;
 	float pixelHeight;
+	float outlineWidth;
 }
 
 // Textures and such
@@ -25,7 +26,7 @@ float Threshold(float val) {
 
 float pixelIntensity(float4 inColor) {
 	//simple average of rgb, may change later
-	return pow((inColor.x + inColor.y + inColor.z) / 3, 1)*1;
+	return pow((inColor.x + inColor.y + inColor.z) / 3, 1);
 }
 
 float edgeDetect(float2 uv) {
@@ -45,7 +46,7 @@ float edgeDetect(float2 uv) {
 	for (int i = -1; i < 2; i++) {
 		for (int j = -1; j < 2; j++) {
 			k++;
-			float2 tempUV = uv + float2(float(i) * dx * 3, float(j) * dy * 3);
+			float2 tempUV = uv + float2(float(i) * dx * outlineWidth, float(j) * dy * outlineWidth);
 			tempUV.x = saturate(tempUV.x);
 			tempUV.y = saturate(tempUV.y);
 			pixel[k] = pixelIntensity(pixels.Sample(trilinear, tempUV));

@@ -11,68 +11,48 @@ cbuffer Data : register(c0) {
 	float thresholdMax;
 	float pixelWidth;
 	float pixelHeight;
+	int blurAmount;
 }
 
 // Textures and such
 Texture2D pixels		: register(t0);
+Texture2D blur			: register(t8);
 SamplerState trilinear	: register(s0);
-
-float Threshold(float val) {
-	if (val < thresholdMin)
-		return 0;
-	return 1;
-}
 
 float pixelIntensity(float4 inColor) {
 	//simple average of rgb, may change later
-	return pow((inColor.x + inColor.y + inColor.z) / 3, 1) * 1;
+	return (inColor.x + inColor.y + inColor.z) /3;
 }
 
-float edgeDetect(float2 uv) {
-	//how far in the uv is one pixel?
-	if (pixelIntensity(pixels.Sample(trilinear, uv)) < 0.1f) {
-		return 0.f;
-	}
-
-	float dx = 1 / pixelWidth;
-	float dy = 1 / pixelHeight;
-
-	float pixel[9];
-	int k = -1;
-	float delta;
-
-	//get neighbor monochrome intensities
-	for (int i = -1; i < 2; i++) {
-		for (int j = -1; j < 2; j++) {
-			k++;
-			float2 tempUV = uv + float2(float(i) * dx * 3, float(j) * dy * 3);
-			tempUV.x = saturate(tempUV.x);
-			tempUV.y = saturate(tempUV.y);
-			pixel[k] = pixelIntensity(pixels.Sample(trilinear, tempUV));
-		}
-	}
-
-	delta = (
-		abs(pixel[1] - pixel[7]) +
-		abs(pixel[5] - pixel[3]) +
-		abs(pixel[0] - pixel[8]) +
-		abs(pixel[2] - pixel[6])
-		) / 4;
-
-	//delta = 0.5f;
-
-	return Threshold(saturate(1.8*delta));
-}
-
-//Code inspired by
-//http://coding-experiments.blogspot.com/2010/06/edge-detection.html
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	float4 color = float4(0,0,0,1);
-	//color.y = pixelIntensity(pixels.Sample(trilinear, input.uv));
-	//return float4(color.yyy,1);
-	color.z = edgeDetect(input.uv);
-	color.y = color.z;
-	return color;
-	return pixels.Sample(trilinear, input.uv);
+	float4 blurColor = blur.Sample(trilinear, input.uv);
+
+	bool mask = blurColor.y > 0.5f;
+
+	float4 totalColor = float4(0, 0, 0, 0);
+	uint sampleCount = 0;
+	
+	totalColor += pixels.Sample(trilinear, input.uv);
+	sampleCount++;
+	
+	for (int i = 1; i <= blurAmount; i++) {
+		if (mask) {
+			float2 uvMod = float2(0, i * pixelHeight);
+
+			totalColor += pixels.Sample(trilinear, input.uv + uvMod);
+			totalColor += pixels.Sample(trilinear, input.uv - uvMod);
+
+			sampleCount += 2;
+
+			uvMod = float2(i * pixelHeight, 0);
+
+			totalColor += pixels.Sample(trilinear, input.uv + uvMod);
+			totalColor += pixels.Sample(trilinear, input.uv - uvMod);
+
+			sampleCount += 2;
+		}
+	}
+	
+	return (totalColor / sampleCount);
 }

@@ -83,6 +83,7 @@ private:
 	ppTest* testEffect;
 	ScreenDepth* screenDepth;
 	EdgeDetect* edgeDetect;
+	FXAA* fxaa;
 
 	//texture 
 	ID3D11ShaderResourceView* skySRV;

@@ -17,6 +17,8 @@ FXAA::FXAA(float width, float height, ID3D11Device* _device, ID3D11DeviceContext
 	setupRenderTarget(&aaRTV, &aaSRV);
 
 	edges = new EdgeDetect(width, height, device, deviceContext);
+	edges->setBlur(false);
+	edges->setOutlineWidth(1.5f);
 }
 
 SRV* FXAA::draw(SRV* ppSRV) {
@@ -27,11 +29,11 @@ SRV* FXAA::draw(SRV* ppSRV) {
 	deviceContext->OMSetRenderTargets(1, &aaRTV, 0);
 	deviceContext->ClearRenderTargetView(aaRTV, color);
 
+	fxaaPS->SetInt("blurAmount", 10);
 	fxaaPS->SetShaderResourceView("pixels", ppSRV);
-	fxaaPS->SetFloat("thresholdMin", 0.1f);
-	fxaaPS->SetFloat("thresholdMax", 0.5f);
-	fxaaPS->SetFloat("pixelWidth", windowWidth);
-	fxaaPS->SetFloat("pixelHeight", windowHeight);
+	fxaaPS->SetShaderResourceView("blur", srv);
+	fxaaPS->SetFloat("pixelWidth", 1 / windowWidth);
+	fxaaPS->SetFloat("pixelHeight", 1 / windowHeight);
 	fxaaPS->SetShader();
 
 	deviceContext->Draw(3, 0);

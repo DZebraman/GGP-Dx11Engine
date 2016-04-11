@@ -8,6 +8,7 @@
 #include "ppTest.h"
 #include "ScreenDepth.h"
 #include "EdgeDetect.h"
+#include "FXAA.h"
 class PostProcess
 {
 public:
