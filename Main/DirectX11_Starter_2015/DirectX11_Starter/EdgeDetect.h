@@ -1,6 +1,6 @@
 #pragma once
 #include "PostProcessBase.h"
-#include "SimpleShader.h"
+
 class EdgeDetect : public PostProcessBase
 {
 public:

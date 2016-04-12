@@ -84,6 +84,7 @@ private:
 	ScreenDepth* screenDepth;
 	EdgeDetect* edgeDetect;
 	FXAA* fxaa;
+	ChromaticAberation* chromatic;
 
 	//texture 
 	ID3D11ShaderResourceView* skySRV;

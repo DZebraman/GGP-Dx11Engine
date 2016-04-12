@@ -43,6 +43,9 @@
     <Filter Include="Shaders\PostProcessing\FXAA">
       <UniqueIdentifier>{3acaaa97-8b57-4e7e-a7d1-07c338f18c17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\PostProcessing\Chromatic Aberation">
+      <UniqueIdentifier>{d705052a-f6ca-4dd7-84f0-4ed1833aeac7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxerr.cpp">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="FXAA.cpp">
       <Filter>Source Files\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="ChromaticAberation.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +170,9 @@
     <ClInclude Include="FXAA.h">
       <Filter>Header Files\PostProcess</Filter>
     </ClInclude>
+    <ClInclude Include="ChromaticAberation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
@@ -207,6 +216,9 @@
     </FxCompile>
     <FxCompile Include="FXAA.hlsl">
       <Filter>Shaders\PostProcessing\FXAA</Filter>
+    </FxCompile>
+    <FxCompile Include="ChromaticAberation.hlsl">
+      <Filter>Shaders\PostProcessing\Chromatic Aberation</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
