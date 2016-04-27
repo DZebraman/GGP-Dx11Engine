@@ -36,7 +36,7 @@ ID3D11ShaderResourceView* Bloom::draw(ID3D11ShaderResourceView* ppSRV){
 	deviceContext->OMSetRenderTargets(1, &filterRTV, 0);
 	deviceContext->ClearRenderTargetView(filterRTV, color);
 
-	filterPS->SetFloat("minBrightness", 0.1f);
+	filterPS->SetFloat("minBrightness", 0.6f);
 	filterPS->SetShaderResourceView("pixels", ppSRV);
 	filterPS->SetSamplerState("trilinear", sampler);
 	filterPS->SetShader();

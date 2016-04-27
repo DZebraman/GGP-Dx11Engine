@@ -46,6 +46,9 @@
     <Filter Include="Shaders\PostProcessing\Chromatic Aberation">
       <UniqueIdentifier>{d705052a-f6ca-4dd7-84f0-4ed1833aeac7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\PostProcessing\Pulse">
+      <UniqueIdentifier>{69b69ae2-c8b0-48c2-a3da-bb53474fe58c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dxerr.cpp">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="ChromaticAberation.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pulse.cpp">
+      <Filter>Source Files\PostProcess</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +179,9 @@
     <ClInclude Include="ChromaticAberation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pulse.h">
+      <Filter>Header Files\PostProcess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">
@@ -219,6 +228,9 @@
     </FxCompile>
     <FxCompile Include="ChromaticAberation.hlsl">
       <Filter>Shaders\PostProcessing\Chromatic Aberation</Filter>
+    </FxCompile>
+    <FxCompile Include="Pulse.hlsl">
+      <Filter>Shaders\PostProcessing\Pulse</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

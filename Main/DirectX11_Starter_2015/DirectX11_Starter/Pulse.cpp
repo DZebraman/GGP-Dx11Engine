@@ -16,7 +16,7 @@ Pulse::Pulse(float width, float height, ID3D11Device* _device, ID3D11DeviceConte
 	pulsePS->LoadShaderFile(L"Pulse.cso");
 
 	
-	DirectX::CreateWICTextureFromFile(device, deviceContext, L"pulseEffect.png", 0, &pulseTexture);
+	DirectX::CreateWICTextureFromFile(device, deviceContext, L"pulse3.png", 0, &pulseTexture);
 
 	setupRenderTarget(&pulseRTV, &pulseSRV);
 
@@ -52,9 +52,12 @@ SRV* Pulse::draw(SRV* ppSRV) {
 	pulsePS->SetFloat("uvScale", pulseSize);
 	pulsePS->SetShader();
 
-	pulseSize -= 0.001f;
+	pulseSize -= pulseIterator;
+	pulseIterator *= 0.999f;
 	if (pulseSize < 0.125f)
-	{ pulseSize = 1; }
+	{
+		pulseSize = 1; pulseIterator = 0.001f;
+	}
 
 	deviceContext->Draw(3, 0);
 	pulsePS->SetShaderResourceView("pixels", 0);

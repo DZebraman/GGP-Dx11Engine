@@ -10,6 +10,7 @@
 #include "EdgeDetect.h"
 #include "FXAA.h"
 #include "ChromaticAberation.h"
+#include "Pulse.h"
 class PostProcess
 {
 public:

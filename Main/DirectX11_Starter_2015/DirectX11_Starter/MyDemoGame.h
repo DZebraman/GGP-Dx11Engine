@@ -85,6 +85,7 @@ private:
 	EdgeDetect* edgeDetect;
 	FXAA* fxaa;
 	ChromaticAberation* chromatic;
+	Pulse* pulse;
 
 	//texture 
 	ID3D11ShaderResourceView* skySRV;

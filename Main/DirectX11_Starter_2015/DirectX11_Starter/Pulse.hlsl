@@ -20,6 +20,6 @@ SamplerState textureClamp	: register(s1);
 float4 main(VertexToPixel input) : SV_TARGET
 {
 	float4 pixelsColor = pixels.Sample(trilinear,input.uv,0);
-	float4 pulseColor = pulse.Sample(textureClamp, (input.uv * uvScale), 0);
-	return pixelsColor * pulseColor;
+	float4 pulseColor = pulse.Sample(textureClamp, (input.uv * uvScale) + 0.5f, 0);
+	return saturate(pixelsColor * (pulseColor+0.2f));
 }

@@ -17,6 +17,7 @@ private:
 	SRV* pulseTexture;
 
 	float pulseSize = 1;
+	float pulseIterator = 0.01f;
 
 	ID3D11SamplerState* pulseSampler;
 

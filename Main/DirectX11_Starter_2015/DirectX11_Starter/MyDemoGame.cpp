@@ -208,11 +208,15 @@ bool MyDemoGame::Init()
 	chromatic = new ChromaticAberation(windowWidth, windowHeight, device, deviceContext, samplerState);
 	edgeDetect->setOutlineWidth(5.f);
 	fxaa = new FXAA(windowWidth, windowHeight, device, deviceContext, samplerState);
+	pulse = new Pulse(windowWidth, windowHeight, device, deviceContext, samplerState);
 	//ppChain->AddEffect(fxaa);
 	//ppChain->AddEffect(screenDepth);
 	//ppChain->AddEffect(edgeDetect);
-	ppChain->AddEffect(bloomEffect);
+	//ppChain->AddEffect(bloomEffect);
+	ppChain->AddEffect(pulse);
+	//ppChain->AddEffect(edgeDetect);
 	ppChain->AddEffect(chromatic);
+	ppChain->AddEffect(bloomEffect);
 	//ppChain->AddEffect(blurEffect);
 	//ppChain->AddEffect(tintEffect);
 	//ppChain->AddEffect(testEffect);
