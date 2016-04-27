@@ -68,6 +68,8 @@ float celShade(float input) {
 float4 main(VertexToPixel input) : SV_TARGET
 {
 
+	return float4(1,1,1,1);
+
 	float3 bitan = cross(input.tan,input.normal);
 	float3 tan = cross(input.biTan, input.normal);
 

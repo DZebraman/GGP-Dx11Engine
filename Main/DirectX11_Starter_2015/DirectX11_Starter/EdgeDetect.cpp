@@ -61,7 +61,7 @@ SRV* EdgeDetect::draw(SRV* ppSRV) {
 
 	edgePS->SetShaderResourceView("pixels", ppSRV);
 	edgePS->SetFloat("outlineWidth", outlineWidth);
-	edgePS->SetFloat("thresholdMin", 0.2f);
+	edgePS->SetFloat("thresholdMin", 0.3f);
 	edgePS->SetFloat("thresholdMax", 0.5f);
 	edgePS->SetFloat("pixelWidth", windowWidth);
 	edgePS->SetFloat("pixelHeight", windowHeight);

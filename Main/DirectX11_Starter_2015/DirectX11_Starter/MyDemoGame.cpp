@@ -213,9 +213,10 @@ bool MyDemoGame::Init()
 	//ppChain->AddEffect(screenDepth);
 	//ppChain->AddEffect(edgeDetect);
 	//ppChain->AddEffect(bloomEffect);
-	ppChain->AddEffect(pulse);
-	//ppChain->AddEffect(edgeDetect);
+
 	ppChain->AddEffect(chromatic);
+	ppChain->AddEffect(edgeDetect);
+	ppChain->AddEffect(pulse);
 	ppChain->AddEffect(bloomEffect);
 	//ppChain->AddEffect(blurEffect);
 	//ppChain->AddEffect(tintEffect);
@@ -499,7 +500,8 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 	//deviceContext->OMSetRenderTargets(1, &renderTargetView, 0);
 	//deviceContext->ClearRenderTargetView(renderTargetView, color);
 
-	ppChain->draw(ppSRV,renderTargetView);
+	pulse->setDeltaTime(deltaTime);
+	ppChain->draw(ppSRV,renderTargetView,deltaTime);
 
 	// Present the buffer
 	//  - Puts the image we're drawing into the window so the user can see it

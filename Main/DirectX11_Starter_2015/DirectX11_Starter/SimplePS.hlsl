@@ -41,6 +41,7 @@ float getLightAmount(DirectionalLight light, float3 normal) : SV_TARGET
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
+	return float4(1,1,1,1);
 	return diffTexture.Sample(trilinear, input.uv) * getLightAmount(light1,input.normal);
 }
 

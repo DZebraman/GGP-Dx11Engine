@@ -6,6 +6,7 @@ Pulse::Pulse(float width, float height, ID3D11Device* _device, ID3D11DeviceConte
 {
 	windowWidth = width;
 	windowHeight = height;
+	aspectRatio = width / height;
 
 	device = _device;
 	deviceContext = _deviceContext;
@@ -16,7 +17,8 @@ Pulse::Pulse(float width, float height, ID3D11Device* _device, ID3D11DeviceConte
 	pulsePS->LoadShaderFile(L"Pulse.cso");
 
 	
-	DirectX::CreateWICTextureFromFile(device, deviceContext, L"pulse3.png", 0, &pulseTexture);
+	DirectX::CreateWICTextureFromFile(device, deviceContext, L"sidePulse.png", 0, &pulseTexture);
+	DirectX::CreateWICTextureFromFile(device, deviceContext, L"grid.png", 0, &gridTexture);
 
 	setupRenderTarget(&pulseRTV, &pulseSRV);
 
@@ -39,25 +41,28 @@ Pulse::~Pulse()
 	delete pulsePS;
 }
 
+void Pulse::setDeltaTime(float dt) {
+	deltaTime = dt;
+}
+
 SRV* Pulse::draw(SRV* ppSRV) {
 	const float color[4] = { 0.1f, 0.1f, 0.1f, 0.1f };
 
 	deviceContext->OMSetRenderTargets(1, &pulseRTV, 0);
 	deviceContext->ClearRenderTargetView(pulseRTV, color);
 
+	pulsePS->SetShaderResourceView("grid", gridTexture);
 	pulsePS->SetShaderResourceView("pixels", ppSRV);
 	pulsePS->SetShaderResourceView("pulse", pulseTexture);
 	pulsePS->SetSamplerState("trilinear", sampler);
 	pulsePS->SetSamplerState("textureClamp", pulseSampler);
-	pulsePS->SetFloat("uvScale", pulseSize);
+	pulsePS->SetFloat("uvScale", 1);
+	pulsePS->SetFloat("offSetX",pulseSize);
+	pulsePS->SetFloat("aspectRatio", aspectRatio);
 	pulsePS->SetShader();
 
-	pulseSize -= pulseIterator;
-	pulseIterator *= 0.999f;
-	if (pulseSize < 0.125f)
-	{
-		pulseSize = 1; pulseIterator = 0.001f;
-	}
+	pulseSize += pulseIterator *deltaTime;
+	//pulseSize = fmodf(pulseSize, 0.5f) - 0.5f;
 
 	deviceContext->Draw(3, 0);
 	pulsePS->SetShaderResourceView("pixels", 0);
