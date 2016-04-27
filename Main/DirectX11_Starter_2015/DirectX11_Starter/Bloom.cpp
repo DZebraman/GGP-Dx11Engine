@@ -58,7 +58,7 @@ ID3D11ShaderResourceView* Bloom::draw(ID3D11ShaderResourceView* ppSRV){
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	device->CreateSamplerState(&samplerDesc, &sampler);
 
-	compositePS->SetInt("blurAmount", 20);
+	compositePS->SetInt("blurAmount", 30);
 	compositePS->SetFloat("pixelWidth", 1.0f / windowWidth);
 	compositePS->SetFloat("pixelHeight", 1.0f / windowHeight);
 	compositePS->SetShaderResourceView("test", filterSRV);

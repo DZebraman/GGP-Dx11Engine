@@ -9,6 +9,7 @@
 #include "ScreenDepth.h"
 #include "EdgeDetect.h"
 #include "FXAA.h"
+#include "ChromaticAberation.h"
 class PostProcess
 {
 public:

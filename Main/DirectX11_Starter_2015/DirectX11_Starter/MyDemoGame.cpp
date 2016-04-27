@@ -205,14 +205,18 @@ bool MyDemoGame::Init()
 	testEffect = new ppTest(windowWidth, windowHeight, device, deviceContext, samplerState, ppRTV);
 	screenDepth = new ScreenDepth(windowWidth, windowHeight, device, deviceContext, samplerState, camera, entities, numMeshes);
 	edgeDetect = new EdgeDetect(windowWidth, windowHeight, device, deviceContext);
+	chromatic = new ChromaticAberation(windowWidth, windowHeight, device, deviceContext, samplerState);
+	edgeDetect->setOutlineWidth(5.f);
 	fxaa = new FXAA(windowWidth, windowHeight, device, deviceContext, samplerState);
-	ppChain->AddEffect(fxaa);
+	//ppChain->AddEffect(fxaa);
 	//ppChain->AddEffect(screenDepth);
 	//ppChain->AddEffect(edgeDetect);
-	//ppChain->AddEffect(bloomEffect);
+	ppChain->AddEffect(bloomEffect);
+	ppChain->AddEffect(chromatic);
 	//ppChain->AddEffect(blurEffect);
 	//ppChain->AddEffect(tintEffect);
 	//ppChain->AddEffect(testEffect);
+	
 	return true;
 }
 
@@ -321,7 +325,7 @@ void MyDemoGame::CreateGeometry()
 	unsigned int indices[] = { 0, 1, 2};
 
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
-	meshes[0]->CreateGeometry("helix.obj");
+	meshes[0]->CreateGeometry("testModel.obj");
 
 	meshes[1]->CreateGeometry("sphere.obj");
 
