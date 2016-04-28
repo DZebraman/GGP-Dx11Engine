@@ -6,7 +6,7 @@ struct VertexToPixel
 	float2 uv           : TEXCOORD0;
 };
 
-cbuffer Data : register(c5) {
+cbuffer Data : register(c0) {
 	float uvScale;
 	float aspectRatio;
 	float offSetX;
@@ -24,10 +24,10 @@ SamplerState textureClamp	: register(s1);
 float4 main(VertexToPixel input) : SV_TARGET
 {
 	float4 pixelsColor = pixels.Sample(trilinear,input.uv,0);
-	float4 pulseColor = pulse.Sample(trilinear, input.uv + float2(-offSetX,0), 0);
+	float4 pulseColor = pulse.Sample(trilinear, (input.uv * 5) + float2(-offSetX,0), 0);
 
-	float uvS = lerp(50, 54, pulseColor.x);
-	float2 uvOff = float2(uvS.xx);
+	//float uvS = lerp(60, 59, pulseColor.x);
+	float2 uvOff = float2(60,60);
 	//float2 uvOff = float2(80, 80);
 
 	float4 gridColor = grid.Sample(trilinear, input.uv * uvOff ,0);
@@ -37,5 +37,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	gridColor *= float4(0, 1, 1, 1);
 
 	//return (pow(pulseColor.xxxx, 0.75f)) * (gridColor);
-	return saturate((pixelsColor + gridColor) * (pow(pulseColor.xxxx,0.75f)));
+	//return (pow(pulseColor.xxxx, 4.f)) * pixelsColor;
+	float4 pulseLight = pow(pulseColor.xxxx, 4.f);
+	return saturate(pixelsColor*(pulseLight+0.06f) + gridColor*(pulseLight + 0.25f));
 }

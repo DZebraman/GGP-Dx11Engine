@@ -19,7 +19,7 @@ private:
 	SRV* gridTexture;
 
 	float pulseSize = 0;
-	float pulseIterator = 0.25f;
+	float pulseIterator = 0.5f;
 	float deltaTime;
 	float aspectRatio;
 

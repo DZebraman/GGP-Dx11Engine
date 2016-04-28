@@ -61,7 +61,7 @@ SRV* Pulse::draw(SRV* ppSRV) {
 	pulsePS->SetFloat("aspectRatio", aspectRatio);
 	pulsePS->SetShader();
 
-	pulseSize += pulseIterator *deltaTime;
+	pulseSize += pulseIterator * deltaTime;
 	//pulseSize = fmodf(pulseSize, 0.5f) - 0.5f;
 
 	deviceContext->Draw(3, 0);

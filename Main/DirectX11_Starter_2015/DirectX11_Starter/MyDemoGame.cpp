@@ -218,6 +218,7 @@ bool MyDemoGame::Init()
 	ppChain->AddEffect(edgeDetect);
 	ppChain->AddEffect(pulse);
 	ppChain->AddEffect(bloomEffect);
+	//ppChain->AddEffect(edgeDetect);
 	//ppChain->AddEffect(blurEffect);
 	//ppChain->AddEffect(tintEffect);
 	//ppChain->AddEffect(testEffect);
@@ -330,7 +331,7 @@ void MyDemoGame::CreateGeometry()
 	unsigned int indices[] = { 0, 1, 2};
 
 	//meshes[0]->CreateGeometry(vertices, indices, 4,6);
-	meshes[0]->CreateGeometry("testModel.obj");
+	meshes[0]->CreateGeometry("helix.obj");
 
 	meshes[1]->CreateGeometry("sphere.obj");
 
