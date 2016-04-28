@@ -11,7 +11,7 @@ public:
 	~PostProcessBase();
 	virtual SRV* draw(SRV* ppSRV);
 protected:
-	float windowWidth, windowHeight;
+	int windowWidth, windowHeight;
 
 	void setupRenderTarget(ID3D11RenderTargetView** rtv, SRV** srv);
 

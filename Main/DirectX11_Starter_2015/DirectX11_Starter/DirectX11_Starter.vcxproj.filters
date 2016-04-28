@@ -176,10 +176,10 @@
     <ClInclude Include="FXAA.h">
       <Filter>Header Files\PostProcess</Filter>
     </ClInclude>
-    <ClInclude Include="ChromaticAberation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Pulse.h">
+      <Filter>Header Files\PostProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="ChromaticAberation.h">
       <Filter>Header Files\PostProcess</Filter>
     </ClInclude>
   </ItemGroup>

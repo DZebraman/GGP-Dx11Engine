@@ -2,7 +2,7 @@
 
 
 
-Blur::Blur(float width, float height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext, ID3D11SamplerState* _sampler, ID3D11RenderTargetView* _rtv)
+Blur::Blur(int width, int height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext, ID3D11SamplerState* _sampler, ID3D11RenderTargetView* _rtv)
 {
 	device = _device;
 	deviceContext = _deviceContext;

@@ -32,7 +32,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	//return float4(1,1,0.5f,1);
 	float4 totalColorX = float4(0,0,0,1);
 	float4 totalColorY = float4(0, 0, 0, 1);
-	uint sampleCount = 4 * blurAmount + 1;
+	uint sampleCount = 2 * blurAmount + 1;
 	
 	totalColorY += test.Sample(trilinear, input.uv);
 	//sampleCount++;
@@ -43,7 +43,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 		totalColorY += test.Sample(trilinear, input.uv + uvMod);
 		totalColorY += test.Sample(trilinear, input.uv - uvMod);
 	}
-	//totalColorY /= sampleCount;
+	totalColorY /= sampleCount;
 
 	for (int i = 1; i <= blurAmount; i++) {
 
@@ -52,7 +52,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 		totalColorX += test.Sample(trilinear, input.uv + uvMod);
 		totalColorX += test.Sample(trilinear, input.uv - uvMod);
 	}
-	//totalColorY /= sampleCount;
+	totalColorX /= sampleCount;
 
-	return ((totalColorY+totalColorX) / sampleCount) + pixels.Sample(trilinear, input.uv);
+	return ((totalColorY+totalColorX) / 2) + pixels.Sample(trilinear, input.uv);
 }

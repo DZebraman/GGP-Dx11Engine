@@ -40,15 +40,15 @@ float4 main(VertexToPixel input) : SV_TARGET
 		if (mask) {
 			float2 uvMod = float2(0, i * pixelHeight);
 
-			totalColor += pixels.Sample(trilinear, input.uv + uvMod);
-			totalColor += pixels.Sample(trilinear, input.uv - uvMod);
+			totalColor += pixels.SampleLevel(trilinear, input.uv + uvMod,0);
+			totalColor += pixels.SampleLevel(trilinear, input.uv - uvMod,0);
 
 			sampleCount += 2;
 
 			uvMod = float2(i * pixelHeight, 0);
 
-			totalColor += pixels.Sample(trilinear, input.uv + uvMod);
-			totalColor += pixels.Sample(trilinear, input.uv - uvMod);
+			totalColor += pixels.SampleLevel(trilinear, input.uv + uvMod,0);
+			totalColor += pixels.SampleLevel(trilinear, input.uv - uvMod,0);
 
 			sampleCount += 2;
 		}

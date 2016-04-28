@@ -2,7 +2,7 @@
 
 
 
-ScreenDepth::ScreenDepth(float width, float height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext, ID3D11SamplerState* _sampler, Camera* _camera, Entity** _entities, int _numMeshes) {
+ScreenDepth::ScreenDepth(int width, int height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext, ID3D11SamplerState* _sampler, Camera* _camera, Entity** _entities, int _numMeshes) {
 	device = _device;
 	deviceContext = _deviceContext;
 

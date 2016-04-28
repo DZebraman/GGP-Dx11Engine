@@ -4,7 +4,7 @@
 class EdgeDetect : public PostProcessBase
 {
 public:
-	EdgeDetect(float width, float height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext);
+	EdgeDetect(int width, int height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext);
 	virtual SRV* draw(SRV* ppSRV);
 	void setBlur(bool _blur);
 	void setSamples(float _samples);

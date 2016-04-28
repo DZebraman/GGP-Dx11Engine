@@ -18,8 +18,8 @@ ID3D11ShaderResourceView* PostProcessBase::draw(SRV* ppSRV){
 void PostProcessBase::setupRenderTarget(ID3D11RenderTargetView** rtv, SRV** srv) {
 	// Create a texture
 	D3D11_TEXTURE2D_DESC tDesc = {};
-	tDesc.Width = windowWidth;
-	tDesc.Height = windowHeight;
+	tDesc.Width = (UINT)windowWidth;
+	tDesc.Height = (UINT)windowHeight;
 	tDesc.ArraySize = 1;
 	tDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 	tDesc.CPUAccessFlags = 0;

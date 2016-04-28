@@ -2,7 +2,7 @@
 
 
 
-Bloom::Bloom(float width, float height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext, ID3D11SamplerState* _sampler)
+Bloom::Bloom(int width, int height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext, ID3D11SamplerState* _sampler)
 {
 	windowWidth = width;
 	windowHeight = height;
@@ -36,7 +36,7 @@ ID3D11ShaderResourceView* Bloom::draw(ID3D11ShaderResourceView* ppSRV){
 	deviceContext->OMSetRenderTargets(1, &filterRTV, 0);
 	deviceContext->ClearRenderTargetView(filterRTV, color);
 
-	filterPS->SetFloat("minBrightness", 0.2f);
+	filterPS->SetFloat("minBrightness", 0.05f);
 	filterPS->SetShaderResourceView("pixels", ppSRV);
 	filterPS->SetSamplerState("trilinear", sampler);
 	filterPS->SetShader();

@@ -49,7 +49,7 @@ float edgeDetect(float2 uv) {
 			float2 tempUV = uv + float2(float(i) * dx * outlineWidth, float(j) * dy * outlineWidth);
 			tempUV.x = saturate(tempUV.x);
 			tempUV.y = saturate(tempUV.y);
-			pixel[k] = pixelIntensity(pixels.Sample(trilinear, tempUV));
+			pixel[k] = pixelIntensity(pixels.SampleLevel(trilinear, tempUV,0));
 		}
 	}
 

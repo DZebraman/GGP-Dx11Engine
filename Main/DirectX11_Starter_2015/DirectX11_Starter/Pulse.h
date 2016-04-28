@@ -7,7 +7,7 @@
 class Pulse : public PostProcessBase
 {
 public:
-	Pulse(float width, float height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext, ID3D11SamplerState* _sampler);
+	Pulse(int width, int height, ID3D11Device* _device, ID3D11DeviceContext * _deviceContext, ID3D11SamplerState* _sampler);
 	virtual SRV* draw(SRV* ppSRV);
 	void setDeltaTime(float dt);
 	~Pulse();
